@@ -262,3 +262,20 @@
   color: #E10600;
   box-shadow: 0 0 10px rgba(225, 6, 0, 0.3);
 }
+
+/* Fix invisible loader overlay blocking click events */
+#loader {
+  pointer-events: none !important;
+}
+
+/* Ensure all custom overlay buttons receive user touch and mouse clicks */
+.dhruv-lang-picker,
+.dhruv-color-picker,
+.dhruv-cam-selector,
+.dhruv-audio-btn,
+.dhruv-lang-btn,
+.dhruv-color-dot,
+.dhruv-cam-btn {
+  z-index: 999999 !important;
+  pointer-events: auto !important;
+}
