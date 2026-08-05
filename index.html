@@ -5,6 +5,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
   
 
   
+  
   <!-- Custom Tooltip for Branded Parts -->
   <div id="dhruvPartTooltip" class="dhruv-tooltip">
     <div class="dhruv-tooltip-title">PART NAME</div>
@@ -19,13 +20,17 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
     <button class="dhruv-cam-btn" data-cam="tv">TV Cam</button>
   </div>
 
-  <!-- Custom Language Picker Overlay -->
+  <!-- Custom Language Picker Overlay (9 Languages) -->
   <div id="dhruvLanguagePicker" class="dhruv-lang-picker">
     <button class="dhruv-lang-btn active" data-lang="en">EN</button>
     <button class="dhruv-lang-btn" data-lang="es">ES</button>
     <button class="dhruv-lang-btn" data-lang="hi">HI</button>
     <button class="dhruv-lang-btn" data-lang="fr">FR</button>
     <button class="dhruv-lang-btn" data-lang="de">DE</button>
+    <button class="dhruv-lang-btn" data-lang="it">IT</button>
+    <button class="dhruv-lang-btn" data-lang="ja">JA</button>
+    <button class="dhruv-lang-btn" data-lang="pt">PT</button>
+    <button class="dhruv-lang-btn" data-lang="zh">ZH</button>
   </div>
 
   <!-- Custom Car Paint Customizer Palette -->
@@ -64,259 +69,268 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
     let turboOsc = null;
     let gainNode = null;
 
-    // Localized Strings
+    // 9 Languages Multilingual Dictionary
     const translations = {
       en: {
         title: "3D Formula 1 Simulator",
         subtitle: "FORMULA 1 PLAYGROUND",
         controls: "WASD / Arrows to drive",
-        kit: "Kit",
-        drive: "Drive",
-        studio: "Studio",
-        chase: "Chase Cam",
-        helmet: "Helmet Cam",
-        tv: "TV Cam",
-        loading: "loading",
-        soundOn: "🔊 ENGINE SOUND",
-        soundOff: "🔇 MUTED"
+        kit: "Kit", drive: "Drive", studio: "Studio",
+        chase: "Chase Cam", helmet: "Helmet Cam", tv: "TV Cam",
+        loading: "loading", soundOn: "🔊 ENGINE SOUND", soundOff: "🔇 MUTED"
       },
       es: {
         title: "Simulador 3D de Fórmula 1",
         subtitle: "PARQUE DE FÓRMULA 1",
         controls: "WASD / Flechas para conducir",
-        kit: "Kit",
-        drive: "Conducir",
-        studio: "Estudio",
-        chase: "Cámara Chase",
-        helmet: "Cámara Casco",
-        tv: "Cámara TV",
-        loading: "cargando",
-        soundOn: "🔊 SONIDO MOTOR",
-        soundOff: "🔇 SILENCIADO"
+        kit: "Kit", drive: "Conducir", studio: "Estudio",
+        chase: "Cámara Chase", helmet: "Cámara Casco", tv: "Cámara TV",
+        loading: "cargando", soundOn: "🔊 SONIDO MOTOR", soundOff: "🔇 SILENCIADO"
       },
       hi: {
         title: "3D फ़ॉर्मूला 1 सिम्युलेटर",
         subtitle: "फ़ॉर्मूला 1 प्लेग्राउंड",
         controls: "ड्राइव करने के लिए WASD / एरो कीज़",
-        kit: "किट",
-        drive: "ड्राइव",
-        studio: "स्टूडियो",
-        chase: "चेस कैम",
-        helmet: "हेलमेट कैम",
-        tv: "टीवी कैम",
-        loading: "लोड हो रहा है",
-        soundOn: "🔊 इंजन साउंड",
-        soundOff: "🔇 म्यूट किया गया"
+        kit: "किट", drive: "ड्राइव", studio: "स्टूडियो",
+        chase: "चेस कैम", helmet: "हेलमेट कैम", tv: "टीवी कैम",
+        loading: "लोड हो रहा है", soundOn: "🔊 इंजन साउंड", soundOff: "🔇 म्यूट किया गया"
       },
       fr: {
         title: "Simulateur 3D de Formule 1",
         subtitle: "TERRAIN DE JEU FORMULE 1",
         controls: "WASD / Flèches pour conduire",
-        kit: "Kit",
-        drive: "Piloter",
-        studio: "Studio",
-        chase: "Cam Course",
-        helmet: "Cam Casque",
-        tv: "Cam TV",
-        loading: "chargement",
-        soundOn: "🔊 SON MOTEUR",
-        soundOff: "🔇EN SOURDINE"
+        kit: "Kit", drive: "Piloter", studio: "Studio",
+        chase: "Cam Course", helmet: "Cam Casque", tv: "Cam TV",
+        loading: "chargement", soundOn: "🔊 SON MOTEUR", soundOff: "🔇 EN SOURDINE"
       },
       de: {
         title: "3D-Formel-1-Simulator",
         subtitle: "FORMEL 1 SPIELWIESE",
         controls: "WASD / Pfeiltasten zum Fahren",
-        kit: "Kit",
-        drive: "Fahren",
-        studio: "Studio",
-        chase: "Chase Cam",
-        helmet: "Helm Cam",
-        tv: "TV Cam",
-        loading: "lädt",
-        soundOn: "🔊 MOTORSOUND",
-        soundOff: "🔇 STUMMGESCHALTET"
+        kit: "Kit", drive: "Fahren", studio: "Studio",
+        chase: "Chase Cam", helmet: "Helm Cam", tv: "TV Cam",
+        loading: "lädt", soundOn: "🔊 MOTORSOUND", soundOff: "🔇 STUMMGESCHALTET"
+      },
+      it: {
+        title: "Simulatore 3D di Formula 1",
+        subtitle: "PARCO GIOCHI FORMULA 1",
+        controls: "WASD / Frecce per guidare",
+        kit: "Kit", drive: "Guida", studio: "Studio",
+        chase: "Cam Inseguimento", helmet: "Cam Casco", tv: "Cam TV",
+        loading: "caricamento", soundOn: "🔊 SUONO MOTORE", soundOff: "🔇 DISATTIVATO"
+      },
+      ja: {
+        title: "3Dフォーミュラ1シミュレーター",
+        subtitle: "フォーミュラ1プレイグラウンド",
+        controls: "WASD / 矢印キーで操作",
+        kit: "キット", drive: "ドライブ", studio: "スタジオ",
+        chase: "チェイスカメラ", helmet: "ヘルメットカメラ", tv: "TVカメラ",
+        loading: "読み込み中", soundOn: "🔊 エンジン音", soundOff: "🔇 ミュート"
+      },
+      pt: {
+        title: "Simulador 3D de Fórmula 1",
+        subtitle: "PLAYGROUND DE FÓRMULA 1",
+        controls: "WASD / Setas para pilotar",
+        kit: "Kit", drive: "Pilotar", studio: "Estúdio",
+        chase: "Câmera Perseguição", helmet: "Câmera Capacete", tv: "Câmera TV",
+        loading: "carregando", soundOn: "🔊 SOM DO MOTOR", soundOff: "🔇 MUTADO"
+      },
+      zh: {
+        title: "3D一级方程式赛车模拟器",
+        subtitle: "F1赛车游乐场",
+        controls: "WASD / 方向键驾驶",
+        kit: "组件", drive: "驾驶", studio: "展示",
+        chase: "追逐视角", helmet: "头盔视角", tv: "电视视角",
+        loading: "加载中", soundOn: "🔊 引擎声音", soundOff: "🔇 静音"
       }
     };
     
     // Map meshes to localized brand names and specifications
     const brands = {
       "front_wing": {
-        name: { en: "Front Wing Aero Spec-A", es: "Alerón Delantero Aero Spec-A", hi: "फ्रंट विंग एयरो स्पेक-ए", fr: "Aileron Avant Aéro Spec-A", de: "Frontflügel Aero Spec-A" },
+        name: { en: "Front Wing Aero Spec-A", es: "Alerón Delantero Aero Spec-A", hi: "फ्रंट विंग एयरो स्पेक-ए", fr: "Aileron Avant Aéro Spec-A", de: "Frontflügel Aero Spec-A", it: "Ala Anteriore Aero Spec-A", ja: "フロントウィング エアロ Spec-A", pt: "Asa Dianteira Aero Spec-A", zh: "前翼空气动力套件 Spec-A" },
         brand: "Brembo",
         desc: {
           en: "High-downforce carbon wings. Dual element design.",
           es: "Alerones de carbono de alta carga aerodinámica. Diseño de doble elemento.",
           hi: "हाई-डाउनफोर्स कार्बन विंग्स। डुअल एलिमेंट डिज़ाइन।",
           fr: "Ailerons en carbone à fort appui. Conception à double élément.",
-          de: "Kohlefaserflügel mit hohem Anpressdruck. Zweiteiliges Design."
+          de: "Kohlefaserflügel mit hohem Anpressdruck. Zweiteiliges Design.",
+          it: "Ali in carbonio ad alto carico aerodinamico. Design a doppio elemento.",
+          ja: "高ダウンフォースカーボンウィング。デュアルエレメント設計。",
+          pt: "Asas de carbono de alta pressão aerodinâmica. Design de elemento duplo.",
+          zh: "高下压力碳纤维前翼。双层结构设计。"
         }
       },
       "rear_wing": {
-        name: { en: "DRS Aero wing Rear", es: "Alerón Trasero DRS Aero", hi: "डीआरएस एयरो विंग रियर", fr: "Aileron Arrière DRS Aéro", de: "Heckflügel DRS Aero" },
+        name: { en: "DRS Aero wing Rear", es: "Alerón Trasero DRS Aero", hi: "डीआरएस एयरो विंग रियर", fr: "Aileron Arrière DRS Aéro", de: "Heckflügel DRS Aero", it: "Ala Posteriore DRS Aero", ja: "DRSリアエアロウィング", pt: "Asa Traseira DRS Aero", zh: "DRS空气动力后翼" },
         brand: "Apex Racing",
         desc: {
           en: "Drag Reduction System wing flap. Boosts straight-line speed.",
           es: "Aleta de alerón del Sistema de Reducción de Arrastre. Aumenta la velocidad en línea recta.",
           hi: "ड्रैग रिडक्शन सिस्टम विंग फ्लैप। सीधी रेखा में गति बढ़ाता है।",
           fr: "Volet d'aileron du système de réduction de traînée. Augmente la vitesse de pointe.",
-          de: "DRS-Heckflügelklappe zur Luftwiderstandsreduzierung. Erhöht die Höchstgeschwindigkeit."
+          de: "DRS-Heckflügelklappe zur Luftwiderstandsreduzierung. Erhöht die Höchstgeschwindigkeit.",
+          it: "Flap alare DRS per la riduzione della resistenza. Aumenta la velocità in rettilineo.",
+          ja: "ドラッグリダクションシステムウィングフラップ。直線スピードを向上。",
+          pt: "Flap da asa do Sistema de Redução de Arrasto. Aumenta a velocidade em linha reta.",
+          zh: "DRS可变阻力后翼。大幅提升直线极限速度。"
         }
       },
       "body": {
-        name: { en: "Monocoque Carbon Chassis", es: "Chasis Monocasco de Carbono", hi: "मोनोकोक कार्बन चेसिस", fr: "Châssis Monocoque en Carbone", de: "Monocoque-Carbon-Chassis" },
+        name: { en: "Monocoque Carbon Chassis", es: "Chasis Monocasco de Carbono", hi: "मोनोकोक कार्बन चेसिस", fr: "Châssis Monocoque en Carbone", de: "Monocoque-Carbon-Chassis", it: "Telaio Monoscocca in Carbonio", ja: "モノコックカーボンシャーシ", pt: "Chassi Monocoque de Carbono", zh: "碳纤维单体壳车架" },
         brand: "Monza Motors",
         desc: {
           en: "Rigid carbon-fiber tub with integrated safety cell.",
           es: "Bañera rígida de fibra de carbono con celda de seguridad integrada.",
           hi: "एकीकृत सुरक्षा सेल के साथ कठोर कार्बन-फाइबर टब।",
           fr: "Structure rigide en fibre de carbone avec cellule de sécurité intégrée.",
-          de: "Steife Kohlefaserwanne mit integrierter Sicherheitszelle."
+          de: "Steife Kohlefaserwanne mit integrierter Sicherheitszelle.",
+          it: "Scocca rigida in fibra di carbonio con cella di sicurezza integrata.",
+          ja: "統合セーフティセルを備えた高剛性カーボンファイバータブ。",
+          pt: "Estrutura rígida de fibra de carbono com célula de segurança integrada.",
+          zh: "超高强度碳纤维座舱，集成车手安全碰撞保护核心。"
         }
       },
       "engine": {
-        name: { en: "V6 Turbo Hybrid Power Unit", es: "Unidad de Potencia Híbrida V6 Turbo", hi: "V6 टर्बो हाइब्रिड पावर यूनिट", fr: "Unité de Puissance V6 Turbo Hybride", de: "V6 Turbo Hybrid-Antriebseinheit" },
+        name: { en: "V6 Turbo Hybrid Power Unit", es: "Unidad de Potencia Híbrida V6 Turbo", hi: "V6 टर्बो हाइब्रिड पावर यूनिट", fr: "Unité de Puissance V6 Turbo Hybride", de: "V6 Turbo Hybrid-Antriebseinheit", it: "Power Unit V6 Turbo Ibrida", ja: "V6ターボハイブリッドパワーユニット", pt: "Unidade de Potência V6 Turbo Híbrida", zh: "V6涡轮增压混合动力引擎" },
         brand: "Turbo Power",
         desc: {
           en: "1.6L turbocharged hybrid engine producing 1000 BHP.",
           es: "Motor híbrido turboalimentado de 1.6L que produce 1000 CV.",
           hi: "1.6L टर्बोचार्ज्ड हाइब्रिड इंजन जो 1000 BHP उत्पन्न करता है।",
           fr: "Moteur hybride turbocompressé de 1,6 L développant 1000 ch.",
-          de: "1,6-Liter-Turbohybridmotor mit einer Leistung von 1000 PS."
+          de: "1,6-Liter-Turbohybridmotor mit einer Leistung von 1000 PS.",
+          it: "Motore ibrido turbo da 1,6 litri che eroga 1000 cavalli.",
+          ja: "1000馬力を発生する1.6Lターボハイブリッドエンジン。",
+          pt: "Motor híbrido turbo de 1,6L produzindo 1000 cv.",
+          zh: "1.6升混合动力涡轮增压引擎，最大输出突破1000匹马力。"
         }
       },
       "wheel": {
-        name: { en: "Formula Slick Tires", es: "Neumáticos Lisos de Fórmula", hi: "फ़ॉर्मूला स्लिक टायर्स", fr: "Pneus Slicks de Formule", de: "Formel-Slickreifen" },
+        name: { en: "Formula Slick Tires", es: "Neumáticos Lisos de Fórmula", hi: "फ़ॉर्मूला स्लिक टायर्स", fr: "Pneus Slicks de Formule", de: "Formel-Slickreifen", it: "Pneumatici Slick Formula", ja: "フォーミュラスリックタイヤ", pt: "Pneus Slick de Fórmula", zh: "F1热熔光头胎" },
         brand: "Pirelli",
         desc: {
           en: "P-Zero Soft compound tires. Optimum grip, high wear.",
           es: "Neumáticos de compuesto blando P-Zero. Agarre óptimo, alto desgaste.",
           hi: "पी-जीरो सॉफ्ट कंपाउंड टायर्स। इष्टतम पकड़, उच्च घिसाव।",
           fr: "Pneus à gomme tendre P-Zero. Adhérence optimale, usure élevée.",
-          de: "P-Zero Soft-Reifenmischung. Optimaler Grip, hoher Verschleiß."
+          de: "P-Zero Soft-Reifenmischung. Optimaler Grip, hoher Verschleiß.",
+          it: "Pneumatici a mescola morbida P-Zero. Aderenza ottimale, elevata usura.",
+          ja: "P-Zeroソフトコンパウンドタイヤ。最適なグリップと高い摩耗性。",
+          pt: "Pneus de composto macio P-Zero. Aderência ideal, alto desgaste.",
+          zh: "P-Zero 软胎配方。提供极致弯道抓地力。"
         }
       },
       "tyre": {
-        name: { en: "Formula Slick Tires", es: "Neumáticos Lisos de Fórmula", hi: "फ़ॉर्मूला स्लिक टायर्स", fr: "Pneus Slicks de Formule", de: "Formel-Slickreifen" },
+        name: { en: "Formula Slick Tires", es: "Neumáticos Lisos de Fórmula", hi: "फ़ॉर्मूला स्लिक टायर्स", fr: "Pneus Slicks de Formule", de: "Formel-Slickreifen", it: "Pneumatici Slick Formula", ja: "フォーミュラスリックタイヤ", pt: "Pneus Slick de Fórmula", zh: "F1热熔光头胎" },
         brand: "Pirelli",
         desc: {
           en: "P-Zero Soft compound tires. Optimum grip, high wear.",
           es: "Neumáticos de compuesto blando P-Zero. Agarre óptimo, alto desgaste.",
           hi: "पी-जीरो सॉफ्ट कंपाउंड टायर्स। इष्टतम पकड़, उच्च घिसाव।",
           fr: "Pneus à gomme tendre P-Zero. Adhérence optimale, usure élevée.",
-          de: "P-Zero Soft-Reifenmischung. Optimaler Grip, hoher Verschleiß."
+          de: "P-Zero Soft-Reifenmischung. Optimaler Grip, hoher Verschleiß.",
+          it: "Pneumatici a mescola morbida P-Zero. Aderenza ottimale, elevata usura.",
+          ja: "P-Zeroソフトコンパウンドタイヤ。最適なグリップと高い摩耗性。",
+          pt: "Pneus de composto macio P-Zero. Aderência ideal, alto desgaste.",
+          zh: "P-Zero 软胎配方。提供极致弯道抓地力。"
         }
       },
       "tire": {
-        name: { en: "Formula Slick Tires", es: "Neumáticos Lisos de Fórmula", hi: "फ़ॉर्मूला स्लिक टायर्स", fr: "Pneus Slicks de Formule", de: "Formel-Slickreifen" },
+        name: { en: "Formula Slick Tires", es: "Neumáticos Lisos de Fórmula", hi: "फ़ॉर्मूला स्लिक टायर्स", fr: "Pneus Slicks de Formule", de: "Formel-Slickreifen", it: "Pneumatici Slick Formula", ja: "フォーミュラスリックタイヤ", pt: "Pneus Slick de Fórmula", zh: "F1热熔光头胎" },
         brand: "Pirelli",
         desc: {
           en: "P-Zero Soft compound tires. Optimum grip, high wear.",
           es: "Neumáticos de compuesto blando P-Zero. Agarre óptimo, alto desgaste.",
           hi: "पी-जीरो सॉफ्ट कंपाउंड टायर्स। इष्टतम पकड़, उच्च घिसाव।",
           fr: "Pneus à gomme tendre P-Zero. Adhérence optimale, usure élevée.",
-          de: "P-Zero Soft-Reifenmischung. Optimaler Grip, hoher Verschleiß."
+          de: "P-Zero Soft-Reifenmischung. Optimaler Grip, hoher Verschleiß.",
+          it: "Pneumatici a mescola morbida P-Zero. Aderenza ottimale, elevata usura.",
+          ja: "P-Zeroソフトコンパウンドタイヤ。最適なグリップと高い摩耗性。",
+          pt: "Pneus de composto macio P-Zero. Aderência ideal, alto desgaste.",
+          zh: "P-Zero 软胎配方。提供极致弯道抓地力。"
         }
       },
       "halo": {
-        name: { en: "Titanium Safety Halo Ring", es: "Anillo de Seguridad Halo de Titanio", hi: "टाइटेनियम सेफ्टी हेलो रिंग", fr: "Halo de Sécurité en Titane", de: "Titan-Sicherheits-Halo" },
+        name: { en: "Titanium Safety Halo Ring", es: "Anillo de Seguridad Halo de Titanio", hi: "टाइटेनियम सेफ्टी हेलो रिंग", fr: "Halo de Sécurité en Titane", de: "Titan-Sicherheits-Halo", it: "Halo di Sicurezza in Titanio", ja: "チタン製セーフティハローリング", pt: "Halo de Segurança de Titânio", zh: "钛合金Halo座舱保护环" },
         brand: "FIA Safety",
         desc: {
           en: "Grade 5 titanium structure protecting the driver's head.",
           es: "Estructura de titanio de grado 5 que protege la cabeza del piloto.",
           hi: "ड्राइवर के सिर की रक्षा करने वाली ग्रेड 5 टाइटेनियम संरचना।",
           fr: "Structure en titane de grade 5 protégeant la tête du pilote.",
-          de: "Titanstruktur der Güteklasse 5 zum Schutz des Kopfes des Fahrers."
+          de: "Titanstruktur der Güteklasse 5 zum Schutz des Kopfes des Fahrers.",
+          it: "Struttura in titanio Grado 5 a protezione della testa del pilota.",
+          ja: "ドライバーの頭部を保護するグレード5チタン構造。",
+          pt: "Estrutura de titânio Grau 5 protegendo a cabeça do piloto.",
+          zh: "5级钛合金防撞结构，承受高达12吨冲击力。"
         }
       },
       "helmet": {
-        name: { en: "Carbon-Fiber Driver Helmet", es: "Casco del Piloto de Fibra de Carbono", hi: "कार्बन-फाइबर ड्राइवर हेलमेट", fr: "Casque de Pilote en Fibre de Carbone", de: "Kohlefaser-Fahrerhelm" },
+        name: { en: "Carbon-Fiber Driver Helmet", es: "Casco del Piloto de Fibra de Carbono", hi: "कार्बन-फाइबर ड्राइवर हेलमेट", fr: "Casque de Pilote en Fibre de Carbone", de: "Kohlefaser-Fahrerhelm", it: "Casco Pilota in Fibra di Carbonio", ja: "カーボンファイバー製ドライバーヘルメット", pt: "Capacete do Piloto de Fibra de Carbono", zh: "碳纤维防弹车手头盔" },
         brand: "Arai",
         desc: {
           en: "Custom aerodynamics and fire-resistant lining.",
           es: "Aerodinámica personalizada y revestimiento resistente al fuego.",
           hi: "कस्टम एयरोडायनामिक्स और अग्निरोधक अस्तर।",
           fr: "Aérodynamisme personnalisé et doublure ignifuge.",
-          de: "Individuelle Aerodynamik und feuerfestes Futter."
+          de: "Individuelle Aerodynamik und feuerfestes Futter.",
+          it: "Aerodinamica personalizzata e fodera ignifuga.",
+          ja: "カスタム空力性能と耐火ライニング。",
+          pt: "Aerodinâmica personalizada e forro resistente ao fogo.",
+          zh: "空气动力学外壳与防火内衬。"
         }
       },
       "steering": {
-        name: { en: "LCD Steering Controller", es: "Controlador de Volante LCD", hi: "एलसीडी स्टीयरिंग कंट्रोलर", fr: "Volant de Contrôle LCD", de: "LCD-Lenkradsteuerung" },
+        name: { en: "LCD Steering Controller", es: "Controlador de Volante LCD", hi: "एलसीडी स्टीयरिंग कंट्रोलर", fr: "Volant de Contrôle LCD", de: "LCD-Lenkradsteuerung", it: "Volante di Controllo LCD", ja: "LCDステアリングコントローラー", pt: "Volante de Controle LCD", zh: "LCD多功能竞技方向盘" },
         brand: "Telemetry Tech",
         desc: {
           en: "Quick-release wheel with integrated telemetry screen.",
           es: "Volante de liberación rápida con pantalla de telemetría integrada.",
           hi: "एकीकृत टेलीमेट्री स्क्रीन के साथ त्वरित-रिलीज़ व्हील।",
           fr: "Volant à dégagement rapide avec écran de télémétrie intégré.",
-          de: "Schnellspannlenkrad mit integriertem Telemetriebildschirm."
+          de: "Schnellspannlenkrad mit integriertem Telemetriebildschirm.",
+          it: "Volante a sgancio rapido con schermo di telemetria integrato.",
+          ja: "テレメトリー画面を統合したクイックリリースステアリング。",
+          pt: "Volante de engate rápido com tela de telemetria integrada.",
+          zh: "快拆式碳纤维方向盘，集成实时遥测LCD液晶屏。"
         }
       },
       "suspension": {
-        name: { en: "Pushrod Active Suspension", es: "Suspensión Activa de Varilla de Empuje", hi: "पुशरॉड एक्टिव सस्पेंशन", fr: "Suspension Active à Poussoir", de: "Pushrod-Aktivfederung" },
+        name: { en: "Pushrod Active Suspension", es: "Suspensión Activa de Varilla de Empuje", hi: "पुशरॉड एक्टिव सस्पेंशन", fr: "Suspension Active à Poussoir", de: "Pushrod-Aktivfederung", it: "Sospensione Attiva Pushrod", ja: "プッシュロッドアクティブサスペンション", pt: "Suspensão Ativa Pushrod", zh: "推杆式主动悬挂系统" },
         brand: "Öhlins",
         desc: {
           en: "Carbon-fiber double wishbones with dampening control.",
           es: "Dobles horquillas de fibra de carbono con control de amortiguación.",
           hi: "डैम्पिंग कंट्रोल के साथ कार्बन-फाइबर डबल विशबोन।",
           fr: "Double triangulation en fibre de carbone avec contrôle d'amortissement.",
-          de: "Doppelquerlenker aus Kohlefaser mit Dämpfungsregelung."
+          de: "Doppelquerlenker aus Kohlefaser mit Dämpfungsregelung.",
+          it: "Doppio braccio oscillante in carbonio con controllo dello smorzamento.",
+          ja: "ダンピングコントロールを備えたカーボンファイバーダブルウィッシュボーン。",
+          pt: "Braços duplos de fibra de carbono com controle de amortecimento.",
+          zh: "碳纤维双叉臂独立悬挂，配备液压减震调节。"
         }
       }
     };
 
-    // Web Audio Synthesizer Class for V6 Turbo Engine Sound
-    function initEngineAudio() {
-      if (audioCtx) return;
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      
-      gainNode = audioCtx.createGain();
-      gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-      gainNode.connect(audioCtx.destination);
-      
-      // Main V6 Sawtooth Engine Rumble
-      engineOsc = audioCtx.createOscillator();
-      engineOsc.type = 'sawtooth';
-      engineOsc.frequency.setValueAtTime(60, audioCtx.currentTime);
-      
-      const filter = audioCtx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(800, audioCtx.currentTime);
-      
-      engineOsc.connect(filter);
-      filter.connect(gainNode);
-      engineOsc.start();
-
-      // Turbo Whine High Sine Wave
-      turboOsc = audioCtx.createOscillator();
-      turboOsc.type = 'sine';
-      turboOsc.frequency.setValueAtTime(1200, audioCtx.currentTime);
-      
-      const turboGain = audioCtx.createGain();
-      turboGain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-      
-      turboOsc.connect(turboGain);
-      turboGain.connect(gainNode);
-      turboOsc.start();
-    }
-
-    function updateEngineSound(kmh) {
-      if (!audioCtx || !isAudioActive) return;
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
+    // Helper to safely update DOM text without risk of Null Pointer Exceptions
+    function safeSetText(selector, text, index = 0) {
+      const els = document.querySelectorAll(selector);
+      if (els && els[index]) {
+        els[index].textContent = text;
       }
-      
-      // Calculate target frequencies based on speed
-      const targetEngineFreq = 60 + (kmh * 2.2); // Idle 60Hz -> Top 600Hz
-      const targetTurboFreq = 1000 + (kmh * 6.0); // 1000Hz -> 2800Hz
-      const targetGain = 0.15 + Math.min(0.25, kmh / 500);
-      
-      engineOsc.frequency.setTargetAtTime(targetEngineFreq, audioCtx.currentTime, 0.08);
-      turboOsc.frequency.setTargetAtTime(targetTurboFreq, audioCtx.currentTime, 0.08);
-      gainNode.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.08);
     }
 
-    function stopEngineSound() {
-      if (gainNode && audioCtx) {
-        gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1);
+    // Helper to apply colors safely to materials or material arrays
+    function applyColorToMat(mat, hex) {
+      if (!mat) return;
+      if (Array.isArray(mat)) {
+        mat.forEach(m => applyColorToMat(m, hex));
+        return;
+      }
+      if (mat.color && typeof mat.color.setStyle === 'function') {
+        mat.color.setStyle(hex);
       }
     }
 
@@ -333,14 +347,14 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       
       // Multilingual toggle function
       function setLanguage(lang) {
-        currentLang = lang;
-        const t = translations[lang];
+        currentLang = lang || 'en';
+        const t = translations[currentLang] || translations.en;
         
         document.title = t.title;
-        document.querySelector('#loader-content-progress-copy').textContent = t.loading;
-        document.querySelector('#loader-content-title p').textContent = "FORMULA 1 PLAYGROUND";
-        document.querySelector('.demoMenu-content-copy.letterSpacing').textContent = t.subtitle;
-        document.querySelectorAll('.demoMenu-content-copy.letterSpacing')[1].textContent = t.controls;
+        safeSetText('#loader-content-progress-copy', t.loading);
+        safeSetText('#loader-content-title p', "FORMULA 1 PLAYGROUND");
+        safeSetText('.demoMenu-content-copy.letterSpacing', t.subtitle, 0);
+        safeSetText('.demoMenu-content-copy.letterSpacing', t.controls, 1);
         
         // Mode picker buttons text updates while keeping brackets intact
         const modeBtns = document.querySelectorAll('.demoFormulaModePicker-btn');
@@ -354,9 +368,9 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         });
         
         // Camera button updates
-        document.querySelector('.dhruv-cam-btn[data-cam="chase"]').textContent = t.chase;
-        document.querySelector('.dhruv-cam-btn[data-cam="helmet"]').textContent = t.helmet;
-        document.querySelector('.dhruv-cam-btn[data-cam="tv"]').textContent = t.tv;
+        safeSetText('.dhruv-cam-btn[data-cam="chase"]', t.chase);
+        safeSetText('.dhruv-cam-btn[data-cam="helmet"]', t.helmet);
+        safeSetText('.dhruv-cam-btn[data-cam="tv"]', t.tv);
 
         // Audio button text update
         audioBtn.textContent = isAudioActive ? t.soundOn : t.soundOff;
@@ -365,44 +379,87 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       // Bind Language Switcher Buttons
       const langBtns = document.querySelectorAll('.dhruv-lang-btn');
       langBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
           langBtns.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           setLanguage(btn.dataset.lang);
         });
       });
 
-      // Bind Audio Button
-      audioBtn.addEventListener('click', () => {
+      // Synchronous Web Audio context initialization on direct user gesture click
+      audioBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         isAudioActive = !isAudioActive;
         audioBtn.classList.toggle('active', isAudioActive);
         audioBtn.textContent = isAudioActive ? translations[currentLang].soundOn : translations[currentLang].soundOff;
+        
         if (isAudioActive) {
-          initEngineAudio();
+          if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            gainNode = audioCtx.createGain();
+            gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+            gainNode.connect(audioCtx.destination);
+            
+            engineOsc = audioCtx.createOscillator();
+            engineOsc.type = 'sawtooth';
+            engineOsc.frequency.setValueAtTime(70, audioCtx.currentTime);
+            
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(850, audioCtx.currentTime);
+            
+            engineOsc.connect(filter);
+            filter.connect(gainNode);
+            engineOsc.start();
+
+            turboOsc = audioCtx.createOscillator();
+            turboOsc.type = 'sine';
+            turboOsc.frequency.setValueAtTime(1100, audioCtx.currentTime);
+            
+            const turboGain = audioCtx.createGain();
+            turboGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+            
+            turboOsc.connect(turboGain);
+            turboGain.connect(gainNode);
+            turboOsc.start();
+          } else if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+          if (gainNode) gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
         } else {
-          stopEngineSound();
+          if (gainNode) gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
         }
       });
 
-      // Bind Car Paint Color Picker
+      // Bind Car Paint Color Picker with deep material traversal
       const colorDots = document.querySelectorAll('.dhruv-color-dot');
       colorDots.forEach(dot => {
-        dot.addEventListener('click', () => {
+        dot.addEventListener('click', (e) => {
+          e.stopPropagation();
           colorDots.forEach(d => d.classList.remove('active'));
           dot.classList.add('active');
           const hexColor = dot.dataset.color;
           
-          // Apply color to car body materials
+          // 1. Update window.carMaterials if available
+          if (window.carMaterials) {
+            Object.values(window.carMaterials).forEach(mat => {
+              const nameLower = (mat.name || "").toLowerCase();
+              if (nameLower.includes('body') || nameLower.includes('paint') || nameLower.includes('chassis') || nameLower.includes('main')) {
+                applyColorToMat(mat, hexColor);
+              }
+            });
+          }
+          
+          # 2. Traverse car mesh hierarchy
           const car = window.car && window.car.mesh;
           if (car) {
             car.traverse(child => {
               if (child.isMesh && child.material) {
                 const nameLower = (child.name || "").toLowerCase();
-                const matNameLower = (child.material.name || "").toLowerCase();
+                const matNameLower = (Array.isArray(child.material) ? child.material.map(m=>m.name||'').join(' ') : child.material.name || "").toLowerCase();
                 if (nameLower.includes('body') || nameLower.includes('chassis') || matNameLower.includes('body') || matNameLower.includes('paint')) {
-                  if (child.material.color) {
-                    child.material.color.setStyle(hexColor);
-                  }
+                  applyColorToMat(child.material, hexColor);
                 }
               }
             });
@@ -442,7 +499,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
             current = current.parent;
           }
           
-          if (found) {
+          if (found && found.name[currentLang]) {
             tooltip.querySelector('.dhruv-tooltip-title').textContent = found.name[currentLang].toUpperCase();
             tooltip.querySelector('.dhruv-tooltip-brand').textContent = found.brand.toUpperCase();
             tooltip.querySelector('.dhruv-tooltip-desc').textContent = found.desc[currentLang];
@@ -459,7 +516,8 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       // Camera selector buttons event binding
       const camBtns = document.querySelectorAll('.dhruv-cam-btn');
       camBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
           camBtns.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           activeCamMode = btn.dataset.cam;
@@ -469,7 +527,6 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       // Monkey-patch window.app.update to override camera position after physics runs
       const originalUpdate = window.app.update;
       window.app.update = function(e) {
-        // 1. Call original update first
         originalUpdate.call(this, e);
         
         const isDriveMode = document.querySelector('.demoFormulaModePicker-btn[data-mode="assembled"]').getAttribute('aria-pressed') === 'true';
@@ -490,7 +547,9 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         } else {
           camSelector.classList.remove('visible');
           speedoHUD.classList.remove('visible');
-          stopEngineSound();
+          if (gainNode && isAudioActive && audioCtx) {
+            gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1);
+          }
           // Reset target mode to chase if not in drive mode
           if (activeCamMode !== 'chase') {
              activeCamMode = 'chase';
@@ -528,9 +587,19 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         document.getElementById('dhruvRpmFill').style.width = `${rpmPct}%`;
 
         // Update Web Audio Sound
-        if (isAudioActive) {
-          updateEngineSound(kmh);
+        if (isAudioActive && audioCtx && engineOsc) {
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+          const targetEngineFreq = 70 + (kmh * 2.2);
+          const targetTurboFreq = 1100 + (kmh * 6.0);
+          const targetGain = 0.12 + Math.min(0.25, kmh / 500);
+          
+          engineOsc.frequency.setTargetAtTime(targetEngineFreq, audioCtx.currentTime, 0.08);
+          turboOsc.frequency.setTargetAtTime(targetTurboFreq, audioCtx.currentTime, 0.08);
+          gainNode.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.08);
         }
+
+        // Force car matrixWorld update before computing transformed offsets
+        car.updateMatrixWorld(true);
 
         // Camera Overrides
         if (activeCamMode === 'helmet') {
