@@ -6,6 +6,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
 
   
   
+  
   <!-- Custom Tooltip for Branded Parts -->
   <div id="dhruvPartTooltip" class="dhruv-tooltip">
     <div class="dhruv-tooltip-title">PART NAME</div>
@@ -56,12 +57,13 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
   <!-- Custom Web Audio Engine Toggle Button -->
   <button id="dhruvAudioToggle" class="dhruv-audio-btn">🔊 ENGINE SOUND</button>
 
-  <!-- Three.js Library & Custom Controller Script -->
+  <!-- Three.js Library & Ground-Up Controller Script -->
   <script type="module">
     import * as THREE from "./js/three.module.js";
 
     let activeCamMode = 'chase';
     let currentLang = 'en';
+    let selectedColor = '#E10600';
     let prevCarPos = new THREE.Vector3();
     let isAudioActive = false;
     let audioCtx = null;
@@ -72,75 +74,48 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
     // 9 Languages Multilingual Dictionary
     const translations = {
       en: {
-        title: "3D Formula 1 Simulator",
-        subtitle: "FORMULA 1 PLAYGROUND",
-        controls: "WASD / Arrows to drive",
-        kit: "Kit", drive: "Drive", studio: "Studio",
-        chase: "Chase Cam", helmet: "Helmet Cam", tv: "TV Cam",
+        title: "3D Formula 1 Simulator", subtitle: "FORMULA 1 PLAYGROUND", controls: "WASD / Arrows to drive",
+        kit: "Kit", drive: "Drive", studio: "Studio", chase: "Chase Cam", helmet: "Helmet Cam", tv: "TV Cam",
         loading: "loading", soundOn: "🔊 ENGINE SOUND", soundOff: "🔇 MUTED"
       },
       es: {
-        title: "Simulador 3D de Fórmula 1",
-        subtitle: "PARQUE DE FÓRMULA 1",
-        controls: "WASD / Flechas para conducir",
-        kit: "Kit", drive: "Conducir", studio: "Estudio",
-        chase: "Cámara Chase", helmet: "Cámara Casco", tv: "Cámara TV",
+        title: "Simulador 3D de Fórmula 1", subtitle: "PARQUE DE FÓRMULA 1", controls: "WASD / Flechas para conducir",
+        kit: "Kit", drive: "Conducir", studio: "Estudio", chase: "Cámara Chase", helmet: "Cámara Casco", tv: "Cámara TV",
         loading: "cargando", soundOn: "🔊 SONIDO MOTOR", soundOff: "🔇 SILENCIADO"
       },
       hi: {
-        title: "3D फ़ॉर्मूला 1 सिम्युलेटर",
-        subtitle: "फ़ॉर्मूला 1 प्लेग्राउंड",
-        controls: "ड्राइव करने के लिए WASD / एरो कीज़",
-        kit: "किट", drive: "ड्राइव", studio: "स्टूडियो",
-        chase: "चेस कैम", helmet: "हेलमेट कैम", tv: "टीवी कैम",
+        title: "3D फ़ॉर्मूला 1 सिम्युलेटर", subtitle: "फ़ॉर्मूला 1 प्लेग्राउंड", controls: "ड्राइव करने के लिए WASD / एरो कीज़",
+        kit: "किट", drive: "ड्राइव", studio: "स्टूडियो", chase: "चेस कैम", helmet: "हेलमेट कैम", tv: "टीवी कैम",
         loading: "लोड हो रहा है", soundOn: "🔊 इंजन साउंड", soundOff: "🔇 म्यूट किया गया"
       },
       fr: {
-        title: "Simulateur 3D de Formule 1",
-        subtitle: "TERRAIN DE JEU FORMULE 1",
-        controls: "WASD / Flèches pour conduire",
-        kit: "Kit", drive: "Piloter", studio: "Studio",
-        chase: "Cam Course", helmet: "Cam Casque", tv: "Cam TV",
+        title: "Simulateur 3D de Formule 1", subtitle: "TERRAIN DE JEU FORMULE 1", controls: "WASD / Flèches pour conduire",
+        kit: "Kit", drive: "Piloter", studio: "Studio", chase: "Cam Course", helmet: "Cam Casque", tv: "Cam TV",
         loading: "chargement", soundOn: "🔊 SON MOTEUR", soundOff: "🔇 EN SOURDINE"
       },
       de: {
-        title: "3D-Formel-1-Simulator",
-        subtitle: "FORMEL 1 SPIELWIESE",
-        controls: "WASD / Pfeiltasten zum Fahren",
-        kit: "Kit", drive: "Fahren", studio: "Studio",
-        chase: "Chase Cam", helmet: "Helm Cam", tv: "TV Cam",
+        title: "3D-Formel-1-Simulator", subtitle: "FORMEL 1 SPIELWIESE", controls: "WASD / Pfeiltasten zum Fahren",
+        kit: "Kit", drive: "Fahren", studio: "Studio", chase: "Chase Cam", helmet: "Helm Cam", tv: "TV Cam",
         loading: "lädt", soundOn: "🔊 MOTORSOUND", soundOff: "🔇 STUMMGESCHALTET"
       },
       it: {
-        title: "Simulatore 3D di Formula 1",
-        subtitle: "PARCO GIOCHI FORMULA 1",
-        controls: "WASD / Frecce per guidare",
-        kit: "Kit", drive: "Guida", studio: "Studio",
-        chase: "Cam Inseguimento", helmet: "Cam Casco", tv: "Cam TV",
+        title: "Simulatore 3D di Formula 1", subtitle: "PARCO GIOCHI FORMULA 1", controls: "WASD / Frecce per guidare",
+        kit: "Kit", drive: "Guida", studio: "Studio", chase: "Cam Inseguimento", helmet: "Cam Casco", tv: "Cam TV",
         loading: "caricamento", soundOn: "🔊 SUONO MOTORE", soundOff: "🔇 DISATTIVATO"
       },
       ja: {
-        title: "3Dフォーミュラ1シミュレーター",
-        subtitle: "フォーミュラ1プレイグラウンド",
-        controls: "WASD / 矢印キーで操作",
-        kit: "キット", drive: "ドライブ", studio: "スタジオ",
-        chase: "チェイスカメラ", helmet: "ヘルメットカメラ", tv: "TVカメラ",
+        title: "3Dフォーミュラ1シミュレーター", subtitle: "フォーミュラ1プレイグラウンド", controls: "WASD / 矢印キーで操作",
+        kit: "キット", drive: "ドライブ", studio: "スタジオ", chase: "チェイスカメラ", helmet: "ヘルメットカメラ", tv: "TVカメラ",
         loading: "読み込み中", soundOn: "🔊 エンジン音", soundOff: "🔇 ミュート"
       },
       pt: {
-        title: "Simulador 3D de Fórmula 1",
-        subtitle: "PLAYGROUND DE FÓRMULA 1",
-        controls: "WASD / Setas para pilotar",
-        kit: "Kit", drive: "Pilotar", studio: "Estúdio",
-        chase: "Câmera Perseguição", helmet: "Câmera Capacete", tv: "Câmera TV",
+        title: "Simulador 3D de Fórmula 1", subtitle: "PLAYGROUND DE FÓRMULA 1", controls: "WASD / Setas para pilotar",
+        kit: "Kit", drive: "Pilotar", studio: "Estúdio", chase: "Câmera Perseguição", helmet: "Câmera Capacete", tv: "Câmera TV",
         loading: "carregando", soundOn: "🔊 SOM DO MOTOR", soundOff: "🔇 MUTADO"
       },
       zh: {
-        title: "3D一级方程式赛车模拟器",
-        subtitle: "F1赛车游乐场",
-        controls: "WASD / 方向键驾驶",
-        kit: "组件", drive: "驾驶", studio: "展示",
-        chase: "追逐视角", helmet: "头盔视角", tv: "电视视角",
+        title: "3D一级方程式赛车模拟器", subtitle: "F1赛车游乐场", controls: "WASD / 方向键驾驶",
+        kit: "组件", drive: "驾驶", studio: "展示", chase: "追逐视角", helmet: "头盔视角", tv: "电视视角",
         loading: "加载中", soundOn: "🔊 引擎声音", soundOff: "🔇 静音"
       }
     };
@@ -314,7 +289,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       }
     };
 
-    // Helper to safely update DOM text without risk of Null Pointer Exceptions
+    // Safe DOM helper
     function safeSetText(selector, text, index = 0) {
       const els = document.querySelectorAll(selector);
       if (els && els[index]) {
@@ -322,7 +297,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       }
     }
 
-    // Helper to apply colors safely to materials or material arrays
+    // Apply color safely to single materials or material arrays
     function applyColorToMat(mat, hex) {
       if (!mat) return;
       if (Array.isArray(mat)) {
@@ -334,61 +309,84 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       }
     }
 
-    function initCustomFeatures() {
-      console.log("F1 Simulator Features Initialized successfully!");
+    function applyCurrentPaintColor() {
+      if (!selectedColor) return;
       
-      const raycaster = new THREE.Raycaster();
-      const mouse = new THREE.Vector2();
-      const tooltip = document.getElementById('dhruvPartTooltip');
-      const camSelector = document.getElementById('dhruvCameraSelector');
-      const colorPicker = document.getElementById('dhruvColorPicker');
-      const speedoHUD = document.getElementById('dhruvSpeedoHUD');
-      const audioBtn = document.getElementById('dhruvAudioToggle');
-      
-      // Multilingual toggle function
-      function setLanguage(lang) {
-        currentLang = lang || 'en';
-        const t = translations[currentLang] || translations.en;
-        
-        document.title = t.title;
-        safeSetText('#loader-content-progress-copy', t.loading);
-        safeSetText('#loader-content-title p', "FORMULA 1 PLAYGROUND");
-        safeSetText('.demoMenu-content-copy.letterSpacing', t.subtitle, 0);
-        safeSetText('.demoMenu-content-copy.letterSpacing', t.controls, 1);
-        
-        // Mode picker buttons text updates while keeping brackets intact
-        const modeBtns = document.querySelectorAll('.demoFormulaModePicker-btn');
-        modeBtns.forEach(btn => {
-          const mode = btn.dataset.mode;
-          let label = "";
-          if (mode === 'kit') label = t.kit;
-          else if (mode === 'assembled') label = t.drive;
-          else if (mode === 'studio') label = t.studio;
-          btn.innerHTML = `<span class="demoFormulaModePicker-bracket">[</span>${label}<span class="demoFormulaModePicker-bracket">]</span>`;
+      if (window.carMaterials) {
+        Object.values(window.carMaterials).forEach(mat => {
+          const nameLower = (mat.name || "").toLowerCase();
+          if (nameLower.includes('body') || nameLower.includes('paint') || nameLower.includes('chassis') || nameLower.includes('main')) {
+            applyColorToMat(mat, selectedColor);
+          }
         });
-        
-        // Camera button updates
-        safeSetText('.dhruv-cam-btn[data-cam="chase"]', t.chase);
-        safeSetText('.dhruv-cam-btn[data-cam="helmet"]', t.helmet);
-        safeSetText('.dhruv-cam-btn[data-cam="tv"]', t.tv);
+      }
+      
+      const car = window.car && window.car.mesh;
+      if (car) {
+        car.traverse(child => {
+          if (child.isMesh && child.material) {
+            const nameLower = (child.name || "").toLowerCase();
+            const matNameLower = (Array.isArray(child.material) ? child.material.map(m=>m.name||'').join(' ') : child.material.name || "").toLowerCase();
+            if (nameLower.includes('body') || nameLower.includes('chassis') || matNameLower.includes('body') || matNameLower.includes('paint')) {
+              applyColorToMat(child.material, selectedColor);
+            }
+          }
+        });
+      }
+    }
 
-        // Audio button text update
+    // Multilingual toggle function
+    function setLanguage(lang) {
+      currentLang = lang || 'en';
+      const t = translations[currentLang] || translations.en;
+      
+      document.title = t.title;
+      safeSetText('#loader-content-progress-copy', t.loading);
+      safeSetText('#loader-content-title p', "FORMULA 1 PLAYGROUND");
+      safeSetText('.demoMenu-content-copy.letterSpacing', t.subtitle, 0);
+      safeSetText('.demoMenu-content-copy.letterSpacing', t.controls, 1);
+      
+      const modeBtns = document.querySelectorAll('.demoFormulaModePicker-btn');
+      modeBtns.forEach(btn => {
+        const mode = btn.dataset.mode;
+        let label = "";
+        if (mode === 'kit') label = t.kit;
+        else if (mode === 'assembled') label = t.drive;
+        else if (mode === 'studio') label = t.studio;
+        btn.innerHTML = `<span class="demoFormulaModePicker-bracket">[</span>${label}<span class="demoFormulaModePicker-bracket">]</span>`;
+      });
+      
+      safeSetText('.dhruv-cam-btn[data-cam="chase"]', t.chase);
+      safeSetText('.dhruv-cam-btn[data-cam="helmet"]', t.helmet);
+      safeSetText('.dhruv-cam-btn[data-cam="tv"]', t.tv);
+
+      const audioBtn = document.getElementById('dhruvAudioToggle');
+      if (audioBtn) {
         audioBtn.textContent = isAudioActive ? t.soundOn : t.soundOff;
       }
+    }
 
-      // Bind Language Switcher Buttons
-      const langBtns = document.querySelectorAll('.dhruv-lang-btn');
-      langBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          langBtns.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          setLanguage(btn.dataset.lang);
-        });
+    // -------------------------------------------------------------
+    // IMMEDIATE EVENT LISTENERS (0ms Delay - Always Active)
+    // -------------------------------------------------------------
+
+    // 1. Language Picker Buttons
+    const langBtns = document.querySelectorAll('.dhruv-lang-btn');
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        langBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        setLanguage(btn.dataset.lang);
       });
+    });
 
-      // Synchronous Web Audio context initialization on direct user gesture click
-      audioBtn.addEventListener('click', (e) => {
+    // 2. Audio Toggle Button with synchronous AudioContext creation & resume
+    const audioBtn = document.getElementById('dhruvAudioToggle');
+    if (audioBtn) {
+      audioBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
         e.stopPropagation();
         isAudioActive = !isAudioActive;
         audioBtn.classList.toggle('active', isAudioActive);
@@ -423,134 +421,131 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
             turboOsc.connect(turboGain);
             turboGain.connect(gainNode);
             turboOsc.start();
-          } else if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
           }
-          if (gainNode) gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+          
+          if (audioCtx && audioCtx.state === 'suspended') {
+            await audioCtx.resume();
+          }
+          if (gainNode && audioCtx) {
+            gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+          }
         } else {
-          if (gainNode) gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+          if (gainNode && audioCtx) {
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+          }
         }
       });
+    }
 
-      // Bind Car Paint Color Picker with deep material traversal
-      const colorDots = document.querySelectorAll('.dhruv-color-dot');
-      colorDots.forEach(dot => {
-        dot.addEventListener('click', (e) => {
-          e.stopPropagation();
-          colorDots.forEach(d => d.classList.remove('active'));
-          dot.classList.add('active');
-          const hexColor = dot.dataset.color;
-          
-          // 1. Update window.carMaterials if available
-          if (window.carMaterials) {
-            Object.values(window.carMaterials).forEach(mat => {
-              const nameLower = (mat.name || "").toLowerCase();
-              if (nameLower.includes('body') || nameLower.includes('paint') || nameLower.includes('chassis') || nameLower.includes('main')) {
-                applyColorToMat(mat, hexColor);
-              }
-            });
-          }
-          
-          # 2. Traverse car mesh hierarchy
-          const car = window.car && window.car.mesh;
-          if (car) {
-            car.traverse(child => {
-              if (child.isMesh && child.material) {
-                const nameLower = (child.name || "").toLowerCase();
-                const matNameLower = (Array.isArray(child.material) ? child.material.map(m=>m.name||'').join(' ') : child.material.name || "").toLowerCase();
-                if (nameLower.includes('body') || nameLower.includes('chassis') || matNameLower.includes('body') || matNameLower.includes('paint')) {
-                  applyColorToMat(child.material, hexColor);
-                }
-              }
-            });
-          }
-        });
+    // 3. Color Dots Picker
+    const colorDots = document.querySelectorAll('.dhruv-color-dot');
+    colorDots.forEach(dot => {
+      dot.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        colorDots.forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+        selectedColor = dot.dataset.color;
+        applyCurrentPaintColor();
       });
+    });
 
-      // Hover inspect Raycaster with full node hierarchy walkup
-      window.addEventListener('pointermove', (e) => {
-        const isKitMode = document.querySelector('.demoFormulaModePicker-btn[data-mode="kit"]').getAttribute('aria-pressed') === 'true';
-        if (!isKitMode || !window.app || !window.webgl || !window.webgl.scene || !window.webgl.camera) {
-          tooltip.classList.remove('visible');
+    // 4. Camera Buttons
+    const camBtns = document.querySelectorAll('.dhruv-cam-btn');
+    camBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        camBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCamMode = btn.dataset.cam;
+      });
+    });
+
+    // 5. Hover Inspect Raycaster
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    const tooltip = document.getElementById('dhruvPartTooltip');
+
+    window.addEventListener('pointermove', (e) => {
+      const isKitMode = document.querySelector('.demoFormulaModePicker-btn[data-mode="kit"]').getAttribute('aria-pressed') === 'true';
+      if (!isKitMode || !window.app || !window.webgl || !window.webgl.scene || !window.webgl.camera) {
+        if (tooltip) tooltip.classList.remove('visible');
+        return;
+      }
+      
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      
+      raycaster.setFromCamera(mouse, window.webgl.camera);
+      const intersects = raycaster.intersectObjects(window.webgl.scene.children, true);
+      
+      if (intersects.length > 0) {
+        let hitObj = intersects[0].object;
+        let found = null;
+        let current = hitObj;
+        
+        while (current && current !== window.webgl.scene) {
+          let nameLower = (current.name || "").toLowerCase();
+          for (const [key, info] of Object.entries(brands)) {
+            if (nameLower.includes(key)) {
+              found = info;
+              break;
+            }
+          }
+          if (found) break;
+          current = current.parent;
+        }
+        
+        if (found && found.name[currentLang] && tooltip) {
+          tooltip.querySelector('.dhruv-tooltip-title').textContent = found.name[currentLang].toUpperCase();
+          tooltip.querySelector('.dhruv-tooltip-brand').textContent = found.brand.toUpperCase();
+          tooltip.querySelector('.dhruv-tooltip-desc').textContent = found.desc[currentLang];
+          tooltip.classList.add('visible');
+          
+          tooltip.style.left = `${e.clientX}px`;
+          tooltip.style.top = `${e.clientY}px`;
           return;
         }
-        
-        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-        
-        raycaster.setFromCamera(mouse, window.webgl.camera);
-        const intersects = raycaster.intersectObjects(window.webgl.scene.children, true);
-        
-        if (intersects.length > 0) {
-          let hitObj = intersects[0].object;
-          let found = null;
-          let current = hitObj;
-          
-          // Walk up hierarchy to find a node match
-          while (current && current !== window.webgl.scene) {
-            let nameLower = (current.name || "").toLowerCase();
-            for (const [key, info] of Object.entries(brands)) {
-              if (nameLower.includes(key)) {
-                found = info;
-                break;
-              }
-            }
-            if (found) break;
-            current = current.parent;
-          }
-          
-          if (found && found.name[currentLang]) {
-            tooltip.querySelector('.dhruv-tooltip-title').textContent = found.name[currentLang].toUpperCase();
-            tooltip.querySelector('.dhruv-tooltip-brand').textContent = found.brand.toUpperCase();
-            tooltip.querySelector('.dhruv-tooltip-desc').textContent = found.desc[currentLang];
-            tooltip.classList.add('visible');
-            
-            tooltip.style.left = `${e.clientX}px`;
-            tooltip.style.top = `${e.clientY}px`;
-            return;
-          }
-        }
-        tooltip.classList.remove('visible');
-      });
+      }
+      if (tooltip) tooltip.classList.remove('visible');
+    });
 
-      // Camera selector buttons event binding
-      const camBtns = document.querySelectorAll('.dhruv-cam-btn');
-      camBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          camBtns.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          activeCamMode = btn.dataset.cam;
-        });
-      });
+    // -------------------------------------------------------------
+    // ANIMATION & PHYSICS UPDATE HOOK (window.app.update)
+    // -------------------------------------------------------------
+    function hookAppUpdate() {
+      if (!window.app || window.app._isCustomHooked) return;
+      window.app._isCustomHooked = true;
 
-      // Monkey-patch window.app.update to override camera position after physics runs
       const originalUpdate = window.app.update;
       window.app.update = function(e) {
         originalUpdate.call(this, e);
         
+        const camSelector = document.getElementById('dhruvCameraSelector');
+        const speedoHUD = document.getElementById('dhruvSpeedoHUD');
+        const colorPicker = document.getElementById('dhruvColorPicker');
+
         const isDriveMode = document.querySelector('.demoFormulaModePicker-btn[data-mode="assembled"]').getAttribute('aria-pressed') === 'true';
         const isStudioMode = document.querySelector('.demoFormulaModePicker-btn[data-mode="studio"]').getAttribute('aria-pressed') === 'true';
         const isKitMode = document.querySelector('.demoFormulaModePicker-btn[data-mode="kit"]').getAttribute('aria-pressed') === 'true';
 
-        // Toggle Color Picker visibility (Studio and Kit modes)
-        if (isStudioMode || isKitMode) {
-          colorPicker.classList.remove('hidden');
-        } else {
-          colorPicker.classList.add('hidden');
+        // Toggle Color Picker
+        if (colorPicker) {
+          if (isStudioMode || isKitMode) colorPicker.classList.remove('hidden');
+          else colorPicker.classList.add('hidden');
         }
 
-        // Toggle Camera Selector and Speedometer HUD visibility (Drive mode)
+        // Toggle Camera Selector & Speedometer
         if (isDriveMode) {
-          camSelector.classList.add('visible');
-          speedoHUD.classList.add('visible');
+          if (camSelector) camSelector.classList.add('visible');
+          if (speedoHUD) speedoHUD.classList.add('visible');
         } else {
-          camSelector.classList.remove('visible');
-          speedoHUD.classList.remove('visible');
+          if (camSelector) camSelector.classList.remove('visible');
+          if (speedoHUD) speedoHUD.classList.remove('visible');
           if (gainNode && isAudioActive && audioCtx) {
             gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1);
           }
-          // Reset target mode to chase if not in drive mode
           if (activeCamMode !== 'chase') {
              activeCamMode = 'chase';
              camBtns.forEach(b => b.classList.remove('active'));
@@ -559,7 +554,9 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
           return;
         }
 
-        // Get the car group from the global window.car hook
+        // Apply Paint Color
+        applyCurrentPaintColor();
+
         const car = window.car && window.car.mesh;
         if (!car || !window.webgl.camera) return;
 
@@ -567,11 +564,9 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         const dist = car.position.distanceTo(prevCarPos);
         prevCarPos.copy(car.position);
         
-        // Velocity (units per delta frame) -> KM/H conversion
         const kmh = Math.round(dist * 60 * 3.6 * 8.0);
-        document.getElementById('dhruvSpeedoVal').textContent = kmh;
+        safeSetText('#dhruvSpeedoVal', kmh);
         
-        // Gear & RPM Indicator
         let gear = "N";
         let rpmPct = Math.min(100, Math.max(10, (kmh % 40) / 40 * 100));
         if (kmh > 0 && kmh < 25) gear = "G1";
@@ -583,10 +578,11 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         else if (kmh >= 220 && kmh < 270) gear = "G7";
         else if (kmh >= 270) gear = "G8";
         
-        document.getElementById('dhruvSpeedoGear').textContent = `GEAR: ${gear}`;
-        document.getElementById('dhruvRpmFill').style.width = `${rpmPct}%`;
+        safeSetText('#dhruvSpeedoGear', `GEAR: ${gear}`);
+        const rpmFill = document.getElementById('dhruvRpmFill');
+        if (rpmFill) rpmFill.style.width = `${rpmPct}%`;
 
-        // Update Web Audio Sound
+        // Update Web Audio Engine Sound Frequency
         if (isAudioActive && audioCtx && engineOsc) {
           if (audioCtx.state === 'suspended') audioCtx.resume();
           const targetEngineFreq = 70 + (kmh * 2.2);
@@ -595,15 +591,14 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
           
           engineOsc.frequency.setTargetAtTime(targetEngineFreq, audioCtx.currentTime, 0.08);
           turboOsc.frequency.setTargetAtTime(targetTurboFreq, audioCtx.currentTime, 0.08);
-          gainNode.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.08);
+          if (gainNode) gainNode.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.08);
         }
 
-        // Force car matrixWorld update before computing transformed offsets
+        // Update Car Matrix
         car.updateMatrixWorld(true);
 
         // Camera Overrides
         if (activeCamMode === 'helmet') {
-          // Camera relative offsets for Helmet view (driver's eye level)
           const relativeOffset = new THREE.Vector3(0, 0.72, -0.15);
           const targetOffset = new THREE.Vector3(0, 0.65, 3.0);
           
@@ -613,7 +608,6 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
           window.webgl.camera.position.copy(camPos);
           window.webgl.camera.lookAt(lookTarget);
         } else if (activeCamMode === 'tv') {
-          // Fixed TV broadcast cam at table corner
           const tvCamPos = new THREE.Vector3(3.5, 1.8, 3.5);
           window.webgl.camera.position.copy(tvCamPos);
           window.webgl.camera.lookAt(car.position);
@@ -621,10 +615,10 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       };
     }
 
-    // Poller to detect when window.app and all WebGL handles are ready
+    // Poller to hook window.app.update when ready
     function checkApp() {
-      if (window.app && window.webgl && window.webgl.scene && window.webgl.camera && window.car && window.car.mesh) {
-        initCustomFeatures();
+      if (window.app && window.webgl) {
+        hookAppUpdate();
       } else {
         setTimeout(checkApp, 100);
       }
