@@ -2,6 +2,8 @@
 loading
 </p> </div> <div id="loader-content-progress-bar"> <div id="loader-content-progress-bar-mask"></div> </div> <div id="loader-content-title" class="letterSpacing"> <p>DHRUV'S PLAYGROUND</p> </div> </div> </div> <canvas id="webglCanvas"></canvas> <div id="demoMenu"> <div id="demoMenu-content"> <div id="demoMenu-content-header"> <a href="https://github.com/Dhrgupta096" target="_blank" style="text-decoration: none;"><p id="demoMenu-content-header-lab" style="font-size: 14px; font-weight: 800; border: 1px solid rgba(255,255,255,0.4); padding: 4px 10px; border-radius: 4px; display: inline-block; margin: 0; color: #fff; letter-spacing: 0.15em;">DHRUV</p></a> <p class="demoMenu-content-copy letterSpacing">
 FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD / Arrows to drive </p> </div> </div> </div> <div id="demoFormulaModePicker"> <div id="demoFormulaModePicker-btns"> <button class="demoFormulaModePicker-btn" data-mode="kit" aria-pressed="true"> <span class="demoFormulaModePicker-bracket">[</span>Kit<span class="demoFormulaModePicker-bracket">]</span> </button> <button class="demoFormulaModePicker-btn" data-mode="assembled" aria-pressed="false"> <span class="demoFormulaModePicker-bracket">[</span>Drive<span class="demoFormulaModePicker-bracket">]</span> </button> <button class="demoFormulaModePicker-btn" data-mode="studio" aria-pressed="false"> <span class="demoFormulaModePicker-bracket">[</span>Studio<span class="demoFormulaModePicker-bracket">]</span> </button> </div> </div><div id="demoFormulaVirtualJoystick"> <div class="demoFormulaVirtualJoystick-base"> <div class="demoFormulaVirtualJoystick-knob"></div> </div> </div> 
+  
+
   <!-- Custom Tooltip for Branded Parts -->
   <div id="dhruvPartTooltip" class="dhruv-tooltip">
     <div class="dhruv-tooltip-title">PART NAME</div>
@@ -16,26 +18,209 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
     <button class="dhruv-cam-btn" data-cam="tv">TV Cam</button>
   </div>
 
+  <!-- Custom Language Picker Overlay -->
+  <div id="dhruvLanguagePicker" class="dhruv-lang-picker">
+    <button class="dhruv-lang-btn active" data-lang="en">EN</button>
+    <button class="dhruv-lang-btn" data-lang="es">ES</button>
+    <button class="dhruv-lang-btn" data-lang="hi">HI</button>
+    <button class="dhruv-lang-btn" data-lang="fr">FR</button>
+    <button class="dhruv-lang-btn" data-lang="de">DE</button>
+  </div>
+
   <!-- Three.js Library & Custom Controller Script -->
   <script type="module">
     import * as THREE from "./js/three.module.js";
 
-    let carGroup = null;
     let activeCamMode = 'chase';
+    let currentLang = 'en';
+
+    // Localized Strings
+    const translations = {
+      en: {
+        title: "Dhruv's Lab - 3D Formula 1 Simulator",
+        subtitle: "FORMULA 1 PLAYGROUND",
+        controls: "WASD / Arrows to drive",
+        kit: "Kit",
+        drive: "Drive",
+        studio: "Studio",
+        chase: "Chase Cam",
+        helmet: "Helmet Cam",
+        tv: "TV Cam",
+        loading: "loading"
+      },
+      es: {
+        title: "Laboratorio de Dhruv - Simulador 3D de Fórmula 1",
+        subtitle: "PARQUE DE FÓRMULA 1",
+        controls: "WASD / Flechas para conducir",
+        kit: "Kit",
+        drive: "Conducir",
+        studio: "Estudio",
+        chase: "Cámara Chase",
+        helmet: "Cámara Casco",
+        tv: "Cámara TV",
+        loading: "cargando"
+      },
+      hi: {
+        title: "ध्रुव की लैब - 3D फ़ॉर्मूला 1 सिम्युलेटर",
+        subtitle: "फ़ॉर्मूला 1 प्लेग्राउंड",
+        controls: "ड्राइव करने के लिए WASD / एरो कीज़",
+        kit: "किट",
+        drive: "ड्राइव",
+        studio: "स्टूडियो",
+        chase: "चेस कैम",
+        helmet: "हेलमेट कैम",
+        tv: "टीवी कैम",
+        loading: "लोड हो रहा है"
+      },
+      fr: {
+        title: "Lab de Dhruv - Simulateur 3D Formule 1",
+        subtitle: "TERRAIN DE JEU FORMULE 1",
+        controls: "WASD / Flèches pour conduire",
+        kit: "Kit",
+        drive: "Piloter",
+        studio: "Studio",
+        chase: "Cam Course",
+        helmet: "Cam Casque",
+        tv: "Cam TV",
+        loading: "chargement"
+      },
+      de: {
+        title: "Dhruvs Labor - 3D Formel 1 Simulator",
+        subtitle: "FORMEL 1 SPIELWIESE",
+        controls: "WASD / Pfeiltasten zum Fahren",
+        kit: "Kit",
+        drive: "Fahren",
+        studio: "Studio",
+        chase: "Chase Cam",
+        helmet: "Helm Cam",
+        tv: "TV Cam",
+        loading: "lädt"
+      }
+    };
     
-    // Map meshes to brand names
+    // Map meshes to localized brand names and specifications
     const brands = {
-      "front_wing": { name: "Front Wing Aero Spec-A", brand: "Brembo", desc: "High-downforce carbon wings. Dual element design." },
-      "rear_wing": { name: "DRS Aero wing Rear", brand: "Dhruv Racing", desc: "Drag Reduction System wing flap. Boosts straight-line speed." },
-      "body": { name: "Monocoque Carbon Chassis", brand: "Dhruv Motors", desc: "Rigid carbon-fiber tub with integrated safety cell." },
-      "engine": { name: "V6 Turbo Hybrid Power Unit", brand: "Dhruv Power", desc: "1.6L turbocharged hybrid engine producing 1000 BHP." },
-      "wheel": { name: "Formula Slick Tires", brand: "Pirelli", desc: "P-Zero Soft compound tires. Optimum grip, high wear." },
-      "tyre": { name: "Formula Slick Tires", brand: "Pirelli", desc: "P-Zero Soft compound tires. Optimum grip, high wear." },
-      "tire": { name: "Formula Slick Tires", brand: "Pirelli", desc: "P-Zero Soft compound tires. Optimum grip, high wear." },
-      "halo": { name: "Titanium Safety Halo Ring", brand: "FIA Safety", desc: "Grade 5 titanium structure protecting the driver's head." },
-      "helmet": { name: "Carbon-Fiber Driver Helmet", brand: "Arai", desc: "Custom aerodynamics and fire-resistant lining." },
-      "steering": { name: "LCD Steering Controller", brand: "Dhruv Tech", desc: "Quick-release wheel with integrated telemetry screen." },
-      "suspension": { name: "Pushrod Active Suspension", brand: "Öhlins", desc: "Carbon-fiber double wishbones with dampening control." }
+      "front_wing": {
+        name: { en: "Front Wing Aero Spec-A", es: "Alerón Delantero Aero Spec-A", hi: "फ्रंट विंग एयरो स्पेक-ए", fr: "Aileron Avant Aéro Spec-A", de: "Frontflügel Aero Spec-A" },
+        brand: "Brembo",
+        desc: {
+          en: "High-downforce carbon wings. Dual element design.",
+          es: "Alerones de carbono de alta carga aerodinámica. Diseño de doble elemento.",
+          hi: "हाई-डाउनफोर्स कार्बन विंग्स। डुअल एलिमेंट डिज़ाइन।",
+          fr: "Ailerons en carbone à fort appui. Conception à double élément.",
+          de: "Kohlefaserflügel mit hohem Anpressdruck. Zweiteiliges Design."
+        }
+      },
+      "rear_wing": {
+        name: { en: "DRS Aero wing Rear", es: "Alerón Trasero DRS Aero", hi: "डीआरएस एयरो विंग रियर", fr: "Aileron Arrière DRS Aéro", de: "Heckflügel DRS Aero" },
+        brand: "Dhruv Racing",
+        desc: {
+          en: "Drag Reduction System wing flap. Boosts straight-line speed.",
+          es: "Aleta de alerón del Sistema de Reducción de Arrastre. Aumenta la velocidad en línea recta.",
+          hi: "ड्रैग रिडक्शन सिस्टम विंग फ्लैप। सीधी रेखा में गति बढ़ाता है।",
+          fr: "Volet d'aileron du système de réduction de traînée. Augmente la vitesse de pointe.",
+          de: "DRS-Heckflügelklappe zur Luftwiderstandsreduzierung. Erhöht die Höchstgeschwindigkeit."
+        }
+      },
+      "body": {
+        name: { en: "Monocoque Carbon Chassis", es: "Chasis Monocasco de Carbono", hi: "मोनोकोक कार्बन चेसिस", fr: "Châssis Monocoque en Carbone", de: "Monocoque-Carbon-Chassis" },
+        brand: "Dhruv Motors",
+        desc: {
+          en: "Rigid carbon-fiber tub with integrated safety cell.",
+          es: "Bañera rígida de fibra de carbono con celda de seguridad integrada.",
+          hi: "एकीकृत सुरक्षा सेल के साथ कठोर कार्बन-फाइबर टब।",
+          fr: "Structure rigide en fibre de carbone avec cellule de sécurité intégrée.",
+          de: "Steife Kohlefaserwanne mit integrierter Sicherheitszelle."
+        }
+      },
+      "engine": {
+        name: { en: "V6 Turbo Hybrid Power Unit", es: "Unidad de Potencia Híbrida V6 Turbo", hi: "V6 टर्बो हाइब्रिड पावर यूनिट", fr: "Unité de Puissance V6 Turbo Hybride", de: "V6 Turbo Hybrid-Antriebseinheit" },
+        brand: "Dhruv Power",
+        desc: {
+          en: "1.6L turbocharged hybrid engine producing 1000 BHP.",
+          es: "Motor híbrido turboalimentado de 1.6L que produce 1000 CV.",
+          hi: "1.6L टर्बोचार्ज्ड हाइब्रिड इंजन जो 1000 BHP उत्पन्न करता है।",
+          fr: "Moteur hybride turbocompressé de 1,6 L développant 1000 ch.",
+          de: "1,6-Liter-Turbohybridmotor mit einer Leistung von 1000 PS."
+        }
+      },
+      "wheel": {
+        name: { en: "Formula Slick Tires", es: "Neumáticos Lisos de Fórmula", hi: "फ़ॉर्मूला स्लिक टायर्स", fr: "Pneus Slicks de Formule", de: "Formel-Slickreifen" },
+        brand: "Pirelli",
+        desc: {
+          en: "P-Zero Soft compound tires. Optimum grip, high wear.",
+          es: "Neumáticos de compuesto blando P-Zero. Agarre óptimo, alto desgaste.",
+          hi: "पी-जीरो सॉफ्ट कंपाउंड टायर्स। इष्टतम पकड़, उच्च घिसाव।",
+          fr: "Pneus à gomme tendre P-Zero. Adhérence optimale, usure élevée.",
+          de: "P-Zero Soft-Reifenmischung. Optimaler Grip, hoher Verschleiß."
+        }
+      },
+      "tyre": {
+        name: { en: "Formula Slick Tires", es: "Neumáticos Lisos de Fórmula", hi: "फ़ॉर्मूला स्लिक टायर्स", fr: "Pneus Slicks de Formule", de: "Formel-Slickreifen" },
+        brand: "Pirelli",
+        desc: {
+          en: "P-Zero Soft compound tires. Optimum grip, high wear.",
+          es: "Neumáticos de compuesto blando P-Zero. Agarre óptimo, alto desgaste.",
+          hi: "पी-जीरो सॉफ्ट कंपाउंड टायर्स। इष्टतम पकड़, उच्च घिसाव।",
+          fr: "Pneus à gomme tendre P-Zero. Adhérence optimale, usure élevée.",
+          de: "P-Zero Soft-Reifenmischung. Optimaler Grip, hoher Verschleiß."
+        }
+      },
+      "tire": {
+        name: { en: "Formula Slick Tires", es: "Neumáticos Lisos de Fórmula", hi: "फ़ॉर्मूला स्लिक टायर्स", fr: "Pneus Slicks de Formule", de: "Formel-Slickreifen" },
+        brand: "Pirelli",
+        desc: {
+          en: "P-Zero Soft compound tires. Optimum grip, high wear.",
+          es: "Neumáticos de compuesto blando P-Zero. Agarre óptimo, alto desgaste.",
+          hi: "पी-जीरो सॉफ्ट कंपाउंड टायर्स। इष्टतम पकड़, उच्च घिसाव।",
+          fr: "Pneus à gomme tendre P-Zero. Adhérence optimale, usure élevée.",
+          de: "P-Zero Soft-Reifenmischung. Optimaler Grip, hoher Verschleiß."
+        }
+      },
+      "halo": {
+        name: { en: "Titanium Safety Halo Ring", es: "Anillo de Seguridad Halo de Titanio", hi: "टाइटेनियम सेफ्टी हेलो रिंग", fr: "Halo de Sécurité en Titane", de: "Titan-Sicherheits-Halo" },
+        brand: "FIA Safety",
+        desc: {
+          en: "Grade 5 titanium structure protecting the driver's head.",
+          es: "Estructura de titanio de grado 5 que protege la cabeza del piloto.",
+          hi: "ड्राइवर के सिर की रक्षा करने वाली ग्रेड 5 टाइटेनियम संरचना।",
+          fr: "Structure en titane de grade 5 protégeant la tête du pilote.",
+          de: "Titanstruktur der Güteklasse 5 zum Schutz des Kopfes des Fahrers."
+        }
+      },
+      "helmet": {
+        name: { en: "Carbon-Fiber Driver Helmet", es: "Casco del Piloto de Fibra de Carbono", hi: "कार्बन-फाइबर ड्राइवर हेलमेट", fr: "Casque de Pilote en Fibre de Carbone", de: "Kohlefaser-Fahrerhelm" },
+        brand: "Arai",
+        desc: {
+          en: "Custom aerodynamics and fire-resistant lining.",
+          es: "Aerodinámica personalizada y revestimiento resistente al fuego.",
+          hi: "कस्टम एयरोडायनामिक्स और अग्निरोधक अस्तर।",
+          fr: "Aérodynamisme personnalisé et doublure ignifuge.",
+          de: "Individuelle Aerodynamik und feuerfestes Futter."
+        }
+      },
+      "steering": {
+        name: { en: "LCD Steering Controller", es: "Controlador de Volante LCD", hi: "एलसीडी स्टीयरिंग कंट्रोलर", fr: "Volant de Contrôle LCD", de: "LCD-Lenkradsteuerung" },
+        brand: "Dhruv Tech",
+        desc: {
+          en: "Quick-release wheel with integrated telemetry screen.",
+          es: "Volante de liberación rápida con pantalla de telemetría integrada.",
+          hi: "एकीकृत टेलीमेट्री स्क्रीन के साथ त्वरित-रिलीज़ व्हील।",
+          fr: "Volant à dégagement rapide avec écran de télémétrie intégré.",
+          de: "Schnellspannlenkrad mit integriertem Telemetriebildschirm."
+        }
+      },
+      "suspension": {
+        name: { en: "Pushrod Active Suspension", es: "Suspensión Activa de Varilla de Empuje", hi: "पुशरॉड एक्टिव सस्पेंशन", fr: "Suspension Active à Poussoir", de: "Pushrod-Aktivfederung" },
+        brand: "Öhlins",
+        desc: {
+          en: "Carbon-fiber double wishbones with dampening control.",
+          es: "Dobles horquillas de fibra de carbono con control de amortiguación.",
+          hi: "डैम्पिंग कंट्रोल के साथ कार्बन-फाइबर डबल विशबोन।",
+          fr: "Double triangulation en fibre de carbone avec contrôle d'amortissement.",
+          de: "Doppelquerlenker aus Kohlefaser mit Dämpfungsregelung."
+        }
+      }
     };
 
     function initCustomFeatures() {
@@ -46,7 +231,46 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       const tooltip = document.getElementById('dhruvPartTooltip');
       const camSelector = document.getElementById('dhruvCameraSelector');
       
-      // Hover inspect Raycaster
+      // Multilingual toggle function
+      function setLanguage(lang) {
+        currentLang = lang;
+        const t = translations[lang];
+        
+        document.title = t.title;
+        document.querySelector('#loader-content-progress-copy').textContent = t.loading;
+        document.querySelector('#loader-content-title p').textContent = "DHRUV'S PLAYGROUND";
+        document.querySelector('#demoMenu-content-header-lab').textContent = "DHRUV";
+        document.querySelector('.demoMenu-content-copy.letterSpacing').textContent = t.subtitle;
+        document.querySelectorAll('.demoMenu-content-copy.letterSpacing')[1].textContent = t.controls;
+        
+        // Mode picker buttons text updates while keeping brackets intact
+        const modeBtns = document.querySelectorAll('.demoFormulaModePicker-btn');
+        modeBtns.forEach(btn => {
+          const mode = btn.dataset.mode;
+          let label = "";
+          if (mode === 'kit') label = t.kit;
+          else if (mode === 'assembled') label = t.drive;
+          else if (mode === 'studio') label = t.studio;
+          btn.innerHTML = `<span class="demoFormulaModePicker-bracket">[</span>${label}<span class="demoFormulaModePicker-bracket">]</span>`;
+        });
+        
+        // Camera button updates
+        document.querySelector('.dhruv-cam-btn[data-cam="chase"]').textContent = t.chase;
+        document.querySelector('.dhruv-cam-btn[data-cam="helmet"]').textContent = t.helmet;
+        document.querySelector('.dhruv-cam-btn[data-cam="tv"]').textContent = t.tv;
+      }
+
+      // Bind Language Switcher Buttons
+      const langBtns = document.querySelectorAll('.dhruv-lang-btn');
+      langBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          langBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          setLanguage(btn.dataset.lang);
+        });
+      });
+
+      // Hover inspect Raycaster with full node hierarchy walkup
       window.addEventListener('pointermove', (e) => {
         const isKitMode = document.querySelector('.demoFormulaModePicker-btn[data-mode="kit"]').getAttribute('aria-pressed') === 'true';
         if (!isKitMode || !window.app || !window.webgl || !window.webgl.scene || !window.webgl.camera) {
@@ -63,18 +287,25 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         if (intersects.length > 0) {
           let hitObj = intersects[0].object;
           let found = null;
-          let nameLower = hitObj.name.toLowerCase();
-          for (const [key, info] of Object.entries(brands)) {
-            if (nameLower.includes(key)) {
-              found = info;
-              break;
+          let current = hitObj;
+          
+          // Walk up hierarchy to find a node match
+          while (current && current !== window.webgl.scene) {
+            let nameLower = (current.name || "").toLowerCase();
+            for (const [key, info] of Object.entries(brands)) {
+              if (nameLower.includes(key)) {
+                found = info;
+                break;
+              }
             }
+            if (found) break;
+            current = current.parent;
           }
           
           if (found) {
-            tooltip.querySelector('.dhruv-tooltip-title').textContent = found.name.toUpperCase();
+            tooltip.querySelector('.dhruv-tooltip-title').textContent = found.name[currentLang].toUpperCase();
             tooltip.querySelector('.dhruv-tooltip-brand').textContent = found.brand.toUpperCase();
-            tooltip.querySelector('.dhruv-tooltip-desc').textContent = found.desc;
+            tooltip.querySelector('.dhruv-tooltip-desc').textContent = found.desc[currentLang];
             tooltip.classList.add('visible');
             
             tooltip.style.left = `${e.clientX}px`;
@@ -95,21 +326,6 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         });
       });
 
-      // Helper to dynamically find the car root group in the scene
-      function findCarGroup() {
-        if (carGroup) return carGroup;
-        window.webgl.scene.traverse(child => {
-          if (child.name && child.name.toLowerCase().includes('chassis')) {
-            let current = child;
-            while (current.parent && current.parent !== window.webgl.scene) {
-              current = current.parent;
-            }
-            carGroup = current;
-          }
-        });
-        return carGroup;
-      }
-
       // Monkey-patch window.app.update to override camera position after physics runs
       const originalUpdate = window.app.update;
       window.app.update = function(e) {
@@ -122,7 +338,6 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
           camSelector.classList.add('visible');
         } else {
           camSelector.classList.remove('visible');
-          // Reset target mode to chase if not in drive mode
           if (activeCamMode !== 'chase') {
              activeCamMode = 'chase';
              camBtns.forEach(b => b.classList.remove('active'));
@@ -131,7 +346,8 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
           return;
         }
 
-        const car = findCarGroup();
+        // Get the car group from the global window.car hook
+        const car = window.car && window.car.mesh;
         if (!car || !window.webgl.camera) return;
 
         if (activeCamMode === 'helmet') {
@@ -153,9 +369,9 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       };
     }
 
-    // Poller to detect when window.app is ready
+    // Poller to detect when window.app and all WebGL handles are ready
     function checkApp() {
-      if (window.app && window.webgl && window.webgl.scene && window.webgl.camera) {
+      if (window.app && window.webgl && window.webgl.scene && window.webgl.camera && window.car && window.car.mesh) {
         initCustomFeatures();
       } else {
         setTimeout(checkApp, 100);
