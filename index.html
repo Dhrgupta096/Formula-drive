@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="description" content="An interactive 3D WebGL Formula 1 model kit and driving simulation playground, built by Dhruv Gupta using Three.js."><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover"><link rel="icon" type="image/png" href="./assets/meta/favIcons/favicon-96x96.png" sizes="96x96"><link rel="icon" type="image/svg+xml" href="./assets/meta/favIcons/favicon.svg"><link rel="shortcut icon" href="./assets/meta/favIcons/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="./assets/meta/favIcons/apple-touch-icon.png"><link rel="manifest" href="./assets/meta/favIcons/site.webmanifest"><meta name="theme-color" content="#000000"><meta name="theme-color" content="#000000" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)"><meta name="generator" content="Astro v5.18.1"><title>Dhruv's Lab - 3D Formula 1 Simulator</title><link rel="stylesheet" href="./_astro/_demo_.BH5Ol2L6.css"><script type="module" src="./_astro/page.B1D-nYk3.js"></script></head> <body> <main id="app">  <div id="loader"> <div id="loader-content"> <div id="loader-content-progress"> <p id="loader-content-progress-copy" class="letterSpacing">
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="description" content="An interactive 3D WebGL Formula 1 model kit and driving simulation playground."><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover"><link rel="icon" type="image/png" href="./assets/meta/favIcons/favicon-96x96.png" sizes="96x96"><link rel="icon" type="image/svg+xml" href="./assets/meta/favIcons/favicon.svg"><link rel="shortcut icon" href="./assets/meta/favIcons/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="./assets/meta/favIcons/apple-touch-icon.png"><link rel="manifest" href="./assets/meta/favIcons/site.webmanifest"><meta name="theme-color" content="#000000"><meta name="theme-color" content="#000000" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)"><meta name="generator" content="Astro v5.18.1"><title>3D Formula 1 Simulator</title><link rel="stylesheet" href="./_astro/_demo_.BH5Ol2L6.css"><script type="module" src="./_astro/page.B1D-nYk3.js"></script></head> <body> <main id="app">  <div id="loader"> <div id="loader-content"> <div id="loader-content-progress"> <p id="loader-content-progress-copy" class="letterSpacing">
 loading
-</p> </div> <div id="loader-content-progress-bar"> <div id="loader-content-progress-bar-mask"></div> </div> <div id="loader-content-title" class="letterSpacing"> <p>DHRUV'S PLAYGROUND</p> </div> </div> </div> <canvas id="webglCanvas"></canvas> <div id="demoMenu"> <div id="demoMenu-content"> <div id="demoMenu-content-header"> <a href="https://github.com/Dhrgupta096" target="_blank" style="text-decoration: none;"><p id="demoMenu-content-header-lab" style="font-size: 14px; font-weight: 800; border: 1px solid rgba(255,255,255,0.4); padding: 4px 10px; border-radius: 4px; display: inline-block; margin: 0; color: #fff; letter-spacing: 0.15em;">DHRUV</p></a> <p class="demoMenu-content-copy letterSpacing">
+</p> </div> <div id="loader-content-progress-bar"> <div id="loader-content-progress-bar-mask"></div> </div> <div id="loader-content-title" class="letterSpacing"> <p>FORMULA 1 PLAYGROUND</p> </div> </div> </div> <canvas id="webglCanvas"></canvas> <div id="demoMenu"> <div id="demoMenu-content"> <div id="demoMenu-content-header"> <span style="font-size: 14px; font-weight: 800; border: 1px solid rgba(255,255,255,0.4); padding: 4px 10px; border-radius: 4px; display: inline-block; margin: 0; color: #fff; letter-spacing: 0.15em;">F1</span> <p class="demoMenu-content-copy letterSpacing">
 FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD / Arrows to drive </p> </div> </div> </div> <div id="demoFormulaModePicker"> <div id="demoFormulaModePicker-btns"> <button class="demoFormulaModePicker-btn" data-mode="kit" aria-pressed="true"> <span class="demoFormulaModePicker-bracket">[</span>Kit<span class="demoFormulaModePicker-bracket">]</span> </button> <button class="demoFormulaModePicker-btn" data-mode="assembled" aria-pressed="false"> <span class="demoFormulaModePicker-bracket">[</span>Drive<span class="demoFormulaModePicker-bracket">]</span> </button> <button class="demoFormulaModePicker-btn" data-mode="studio" aria-pressed="false"> <span class="demoFormulaModePicker-bracket">[</span>Studio<span class="demoFormulaModePicker-bracket">]</span> </button> </div> </div><div id="demoFormulaVirtualJoystick"> <div class="demoFormulaVirtualJoystick-base"> <div class="demoFormulaVirtualJoystick-knob"></div> </div> </div> 
   
 
@@ -37,7 +37,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
     // Localized Strings
     const translations = {
       en: {
-        title: "Dhruv's Lab - 3D Formula 1 Simulator",
+        title: "3D Formula 1 Simulator",
         subtitle: "FORMULA 1 PLAYGROUND",
         controls: "WASD / Arrows to drive",
         kit: "Kit",
@@ -49,7 +49,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         loading: "loading"
       },
       es: {
-        title: "Laboratorio de Dhruv - Simulador 3D de Fórmula 1",
+        title: "Simulador 3D de Fórmula 1",
         subtitle: "PARQUE DE FÓRMULA 1",
         controls: "WASD / Flechas para conducir",
         kit: "Kit",
@@ -61,7 +61,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         loading: "cargando"
       },
       hi: {
-        title: "ध्रुव की लैब - 3D फ़ॉर्मूला 1 सिम्युलेटर",
+        title: "3D फ़ॉर्मूला 1 सिम्युलेटर",
         subtitle: "फ़ॉर्मूला 1 प्लेग्राउंड",
         controls: "ड्राइव करने के लिए WASD / एरो कीज़",
         kit: "किट",
@@ -73,7 +73,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         loading: "लोड हो रहा है"
       },
       fr: {
-        title: "Lab de Dhruv - Simulateur 3D Formule 1",
+        title: "Simulateur 3D de Formule 1",
         subtitle: "TERRAIN DE JEU FORMULE 1",
         controls: "WASD / Flèches pour conduire",
         kit: "Kit",
@@ -85,7 +85,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         loading: "chargement"
       },
       de: {
-        title: "Dhruvs Labor - 3D Formel 1 Simulator",
+        title: "3D-Formel-1-Simulator",
         subtitle: "FORMEL 1 SPIELWIESE",
         controls: "WASD / Pfeiltasten zum Fahren",
         kit: "Kit",
@@ -113,7 +113,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       },
       "rear_wing": {
         name: { en: "DRS Aero wing Rear", es: "Alerón Trasero DRS Aero", hi: "डीआरएस एयरो विंग रियर", fr: "Aileron Arrière DRS Aéro", de: "Heckflügel DRS Aero" },
-        brand: "Dhruv Racing",
+        brand: "Apex Racing",
         desc: {
           en: "Drag Reduction System wing flap. Boosts straight-line speed.",
           es: "Aleta de alerón del Sistema de Reducción de Arrastre. Aumenta la velocidad en línea recta.",
@@ -124,7 +124,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       },
       "body": {
         name: { en: "Monocoque Carbon Chassis", es: "Chasis Monocasco de Carbono", hi: "मोनोकोक कार्बन चेसिस", fr: "Châssis Monocoque en Carbone", de: "Monocoque-Carbon-Chassis" },
-        brand: "Dhruv Motors",
+        brand: "Monza Motors",
         desc: {
           en: "Rigid carbon-fiber tub with integrated safety cell.",
           es: "Bañera rígida de fibra de carbono con celda de seguridad integrada.",
@@ -135,7 +135,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       },
       "engine": {
         name: { en: "V6 Turbo Hybrid Power Unit", es: "Unidad de Potencia Híbrida V6 Turbo", hi: "V6 टर्बो हाइब्रिड पावर यूनिट", fr: "Unité de Puissance V6 Turbo Hybride", de: "V6 Turbo Hybrid-Antriebseinheit" },
-        brand: "Dhruv Power",
+        brand: "Turbo Power",
         desc: {
           en: "1.6L turbocharged hybrid engine producing 1000 BHP.",
           es: "Motor híbrido turboalimentado de 1.6L que produce 1000 CV.",
@@ -201,7 +201,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       },
       "steering": {
         name: { en: "LCD Steering Controller", es: "Controlador de Volante LCD", hi: "एलसीडी स्टीयरिंग कंट्रोलर", fr: "Volant de Contrôle LCD", de: "LCD-Lenkradsteuerung" },
-        brand: "Dhruv Tech",
+        brand: "Telemetry Tech",
         desc: {
           en: "Quick-release wheel with integrated telemetry screen.",
           es: "Volante de liberación rápida con pantalla de telemetría integrada.",
@@ -224,7 +224,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
     };
 
     function initCustomFeatures() {
-      console.log("Dhruv's Custom Features Initialized successfully!");
+      console.log("F1 Simulator Features Initialized successfully!");
       
       const raycaster = new THREE.Raycaster();
       const mouse = new THREE.Vector2();
@@ -238,8 +238,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         
         document.title = t.title;
         document.querySelector('#loader-content-progress-copy').textContent = t.loading;
-        document.querySelector('#loader-content-title p').textContent = "DHRUV'S PLAYGROUND";
-        document.querySelector('#demoMenu-content-header-lab').textContent = "DHRUV";
+        document.querySelector('#loader-content-title p').textContent = "FORMULA 1 PLAYGROUND";
         document.querySelector('.demoMenu-content-copy.letterSpacing').textContent = t.subtitle;
         document.querySelectorAll('.demoMenu-content-copy.letterSpacing')[1].textContent = t.controls;
         
