@@ -110,10 +110,13 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         return carGroup;
       }
 
-      // Loop to override camera position
-      function updateCamera() {
-        requestAnimationFrame(updateCamera);
+      // Monkey-patch window.app.update to override camera position after physics runs
+      const originalUpdate = window.app.update;
+      window.app.update = function(e) {
+        // 1. Call original update first
+        originalUpdate.call(this, e);
         
+        // 2. Custom Camera Override logic
         const isDriveMode = document.querySelector('.demoFormulaModePicker-btn[data-mode="assembled"]').getAttribute('aria-pressed') === 'true';
         if (isDriveMode) {
           camSelector.classList.add('visible');
@@ -147,9 +150,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
           window.app.camera.position.copy(tvCamPos);
           window.app.camera.lookAt(car.position);
         }
-      }
-      
-      updateCamera();
+      };
     }
 
     // Poller to detect when window.app is ready
