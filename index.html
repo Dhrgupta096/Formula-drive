@@ -18,7 +18,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
 
   <!-- Three.js Library & Custom Controller Script -->
   <script type="module">
-    import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+    import * as THREE from "./js/three.module.js";
 
     let carGroup = null;
     let activeCamMode = 'chase';
@@ -49,7 +49,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       // Hover inspect Raycaster
       window.addEventListener('pointermove', (e) => {
         const isKitMode = document.querySelector('.demoFormulaModePicker-btn[data-mode="kit"]').getAttribute('aria-pressed') === 'true';
-        if (!isKitMode || !window.app || !window.app.scene || !window.app.camera) {
+        if (!isKitMode || !window.app || !window.webgl || !window.webgl.scene || !window.webgl.camera) {
           tooltip.classList.remove('visible');
           return;
         }
@@ -57,8 +57,8 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
         
-        raycaster.setFromCamera(mouse, window.app.camera);
-        const intersects = raycaster.intersectObjects(window.app.scene.children, true);
+        raycaster.setFromCamera(mouse, window.webgl.camera);
+        const intersects = raycaster.intersectObjects(window.webgl.scene.children, true);
         
         if (intersects.length > 0) {
           let hitObj = intersects[0].object;
@@ -98,10 +98,10 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
       // Helper to dynamically find the car root group in the scene
       function findCarGroup() {
         if (carGroup) return carGroup;
-        window.app.scene.traverse(child => {
+        window.webgl.scene.traverse(child => {
           if (child.name && child.name.toLowerCase().includes('chassis')) {
             let current = child;
-            while (current.parent && current.parent !== window.app.scene) {
+            while (current.parent && current.parent !== window.webgl.scene) {
               current = current.parent;
             }
             carGroup = current;
@@ -132,7 +132,7 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
         }
 
         const car = findCarGroup();
-        if (!car || !window.app.camera) return;
+        if (!car || !window.webgl.camera) return;
 
         if (activeCamMode === 'helmet') {
           // Camera relative offsets for Helmet view (driver's eye level)
@@ -142,20 +142,20 @@ FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD 
           const camPos = relativeOffset.clone().applyMatrix4(car.matrixWorld);
           const lookTarget = targetOffset.clone().applyMatrix4(car.matrixWorld);
           
-          window.app.camera.position.copy(camPos);
-          window.app.camera.lookAt(lookTarget);
+          window.webgl.camera.position.copy(camPos);
+          window.webgl.camera.lookAt(lookTarget);
         } else if (activeCamMode === 'tv') {
           // Fixed TV broadcast cam at table corner
           const tvCamPos = new THREE.Vector3(3.5, 1.8, 3.5);
-          window.app.camera.position.copy(tvCamPos);
-          window.app.camera.lookAt(car.position);
+          window.webgl.camera.position.copy(tvCamPos);
+          window.webgl.camera.lookAt(car.position);
         }
       };
     }
 
     // Poller to detect when window.app is ready
     function checkApp() {
-      if (window.app && window.app.scene && window.app.camera) {
+      if (window.app && window.webgl && window.webgl.scene && window.webgl.camera) {
         initCustomFeatures();
       } else {
         setTimeout(checkApp, 100);
