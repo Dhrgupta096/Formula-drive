@@ -1,7 +1,168 @@
 <!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="description" content="An interactive 3D WebGL Formula 1 model kit and driving simulation playground, built by Dhruv Gupta using Three.js."><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover"><link rel="icon" type="image/png" href="./assets/meta/favIcons/favicon-96x96.png" sizes="96x96"><link rel="icon" type="image/svg+xml" href="./assets/meta/favIcons/favicon.svg"><link rel="shortcut icon" href="./assets/meta/favIcons/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="./assets/meta/favIcons/apple-touch-icon.png"><link rel="manifest" href="./assets/meta/favIcons/site.webmanifest"><meta name="theme-color" content="#000000"><meta name="theme-color" content="#000000" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)"><meta name="generator" content="Astro v5.18.1"><title>Dhruv's Lab - 3D Formula 1 Simulator</title><link rel="stylesheet" href="./_astro/_demo_.BH5Ol2L6.css"><script type="module" src="./_astro/page.B1D-nYk3.js"></script></head> <body> <main id="app">  <div id="loader"> <div id="loader-content"> <div id="loader-content-progress"> <p id="loader-content-progress-copy" class="letterSpacing">
 loading
 </p> </div> <div id="loader-content-progress-bar"> <div id="loader-content-progress-bar-mask"></div> </div> <div id="loader-content-title" class="letterSpacing"> <p>DHRUV'S PLAYGROUND</p> </div> </div> </div> <canvas id="webglCanvas"></canvas> <div id="demoMenu"> <div id="demoMenu-content"> <div id="demoMenu-content-header"> <a href="https://github.com/Dhrgupta096" target="_blank" style="text-decoration: none;"><p id="demoMenu-content-header-lab" style="font-size: 14px; font-weight: 800; border: 1px solid rgba(255,255,255,0.4); padding: 4px 10px; border-radius: 4px; display: inline-block; margin: 0; color: #fff; letter-spacing: 0.15em;">DHRUV</p></a> <p class="demoMenu-content-copy letterSpacing">
-FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD / Arrows to drive </p> </div> </div> </div> <div id="demoFormulaModePicker"> <div id="demoFormulaModePicker-btns"> <button class="demoFormulaModePicker-btn" data-mode="kit" aria-pressed="true"> <span class="demoFormulaModePicker-bracket">[</span>Kit<span class="demoFormulaModePicker-bracket">]</span> </button> <button class="demoFormulaModePicker-btn" data-mode="assembled" aria-pressed="false"> <span class="demoFormulaModePicker-bracket">[</span>Drive<span class="demoFormulaModePicker-bracket">]</span> </button> <button class="demoFormulaModePicker-btn" data-mode="studio" aria-pressed="false"> <span class="demoFormulaModePicker-bracket">[</span>Studio<span class="demoFormulaModePicker-bracket">]</span> </button> </div> </div><div id="demoFormulaVirtualJoystick"> <div class="demoFormulaVirtualJoystick-base"> <div class="demoFormulaVirtualJoystick-knob"></div> </div> </div> </main> </body></html> <!-- Add an inline script to make the demoId available to client-side JavaScript --> <script>(function(){const demoId = "demoFormula";
+FORMULA 1 PLAYGROUND </p> <p class="demoMenu-content-copy letterSpacing">  WASD / Arrows to drive </p> </div> </div> </div> <div id="demoFormulaModePicker"> <div id="demoFormulaModePicker-btns"> <button class="demoFormulaModePicker-btn" data-mode="kit" aria-pressed="true"> <span class="demoFormulaModePicker-bracket">[</span>Kit<span class="demoFormulaModePicker-bracket">]</span> </button> <button class="demoFormulaModePicker-btn" data-mode="assembled" aria-pressed="false"> <span class="demoFormulaModePicker-bracket">[</span>Drive<span class="demoFormulaModePicker-bracket">]</span> </button> <button class="demoFormulaModePicker-btn" data-mode="studio" aria-pressed="false"> <span class="demoFormulaModePicker-bracket">[</span>Studio<span class="demoFormulaModePicker-bracket">]</span> </button> </div> </div><div id="demoFormulaVirtualJoystick"> <div class="demoFormulaVirtualJoystick-base"> <div class="demoFormulaVirtualJoystick-knob"></div> </div> </div> 
+  <!-- Custom Tooltip for Branded Parts -->
+  <div id="dhruvPartTooltip" class="dhruv-tooltip">
+    <div class="dhruv-tooltip-title">PART NAME</div>
+    <div class="dhruv-tooltip-brand">BRAND NAME</div>
+    <div class="dhruv-tooltip-desc">Description details...</div>
+  </div>
+
+  <!-- Custom Camera Selector Overlay -->
+  <div id="dhruvCameraSelector" class="dhruv-cam-selector">
+    <button class="dhruv-cam-btn active" data-cam="chase">Chase Cam</button>
+    <button class="dhruv-cam-btn" data-cam="helmet">Helmet Cam</button>
+    <button class="dhruv-cam-btn" data-cam="tv">TV Cam</button>
+  </div>
+
+  <!-- Three.js Library & Custom Controller Script -->
+  <script type="module">
+    import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+
+    let carGroup = null;
+    let activeCamMode = 'chase';
+    
+    // Map meshes to brand names
+    const brands = {
+      "front_wing": { name: "Front Wing Aero Spec-A", brand: "Brembo", desc: "High-downforce carbon wings. Dual element design." },
+      "rear_wing": { name: "DRS Aero wing Rear", brand: "Dhruv Racing", desc: "Drag Reduction System wing flap. Boosts straight-line speed." },
+      "body": { name: "Monocoque Carbon Chassis", brand: "Dhruv Motors", desc: "Rigid carbon-fiber tub with integrated safety cell." },
+      "engine": { name: "V6 Turbo Hybrid Power Unit", brand: "Dhruv Power", desc: "1.6L turbocharged hybrid engine producing 1000 BHP." },
+      "wheel": { name: "Formula Slick Tires", brand: "Pirelli", desc: "P-Zero Soft compound tires. Optimum grip, high wear." },
+      "tyre": { name: "Formula Slick Tires", brand: "Pirelli", desc: "P-Zero Soft compound tires. Optimum grip, high wear." },
+      "tire": { name: "Formula Slick Tires", brand: "Pirelli", desc: "P-Zero Soft compound tires. Optimum grip, high wear." },
+      "halo": { name: "Titanium Safety Halo Ring", brand: "FIA Safety", desc: "Grade 5 titanium structure protecting the driver's head." },
+      "helmet": { name: "Carbon-Fiber Driver Helmet", brand: "Arai", desc: "Custom aerodynamics and fire-resistant lining." },
+      "steering": { name: "LCD Steering Controller", brand: "Dhruv Tech", desc: "Quick-release wheel with integrated telemetry screen." },
+      "suspension": { name: "Pushrod Active Suspension", brand: "Öhlins", desc: "Carbon-fiber double wishbones with dampening control." }
+    };
+
+    function initCustomFeatures() {
+      console.log("Dhruv's Custom Features Initialized successfully!");
+      
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+      const tooltip = document.getElementById('dhruvPartTooltip');
+      const camSelector = document.getElementById('dhruvCameraSelector');
+      
+      // Hover inspect Raycaster
+      window.addEventListener('pointermove', (e) => {
+        const isKitMode = document.querySelector('.demoFormulaModePicker-btn[data-mode="kit"]').getAttribute('aria-pressed') === 'true';
+        if (!isKitMode || !window.app || !window.app.scene || !window.app.camera) {
+          tooltip.classList.remove('visible');
+          return;
+        }
+        
+        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        
+        raycaster.setFromCamera(mouse, window.app.camera);
+        const intersects = raycaster.intersectObjects(window.app.scene.children, true);
+        
+        if (intersects.length > 0) {
+          let hitObj = intersects[0].object;
+          let found = null;
+          let nameLower = hitObj.name.toLowerCase();
+          for (const [key, info] of Object.entries(brands)) {
+            if (nameLower.includes(key)) {
+              found = info;
+              break;
+            }
+          }
+          
+          if (found) {
+            tooltip.querySelector('.dhruv-tooltip-title').textContent = found.name.toUpperCase();
+            tooltip.querySelector('.dhruv-tooltip-brand').textContent = found.brand.toUpperCase();
+            tooltip.querySelector('.dhruv-tooltip-desc').textContent = found.desc;
+            tooltip.classList.add('visible');
+            
+            tooltip.style.left = `${e.clientX}px`;
+            tooltip.style.top = `${e.clientY}px`;
+            return;
+          }
+        }
+        tooltip.classList.remove('visible');
+      });
+
+      // Camera selector buttons event binding
+      const camBtns = document.querySelectorAll('.dhruv-cam-btn');
+      camBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          camBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeCamMode = btn.dataset.cam;
+        });
+      });
+
+      // Helper to dynamically find the car root group in the scene
+      function findCarGroup() {
+        if (carGroup) return carGroup;
+        window.app.scene.traverse(child => {
+          if (child.name && child.name.toLowerCase().includes('chassis')) {
+            let current = child;
+            while (current.parent && current.parent !== window.app.scene) {
+              current = current.parent;
+            }
+            carGroup = current;
+          }
+        });
+        return carGroup;
+      }
+
+      // Loop to override camera position
+      function updateCamera() {
+        requestAnimationFrame(updateCamera);
+        
+        const isDriveMode = document.querySelector('.demoFormulaModePicker-btn[data-mode="assembled"]').getAttribute('aria-pressed') === 'true';
+        if (isDriveMode) {
+          camSelector.classList.add('visible');
+        } else {
+          camSelector.classList.remove('visible');
+          // Reset target mode to chase if not in drive mode
+          if (activeCamMode !== 'chase') {
+             activeCamMode = 'chase';
+             camBtns.forEach(b => b.classList.remove('active'));
+             document.querySelector('.dhruv-cam-btn[data-cam="chase"]').classList.add('active');
+          }
+          return;
+        }
+
+        const car = findCarGroup();
+        if (!car || !window.app.camera) return;
+
+        if (activeCamMode === 'helmet') {
+          // Camera relative offsets for Helmet view (driver's eye level)
+          const relativeOffset = new THREE.Vector3(0, 0.72, -0.15);
+          const targetOffset = new THREE.Vector3(0, 0.65, 3.0);
+          
+          const camPos = relativeOffset.clone().applyMatrix4(car.matrixWorld);
+          const lookTarget = targetOffset.clone().applyMatrix4(car.matrixWorld);
+          
+          window.app.camera.position.copy(camPos);
+          window.app.camera.lookAt(lookTarget);
+        } else if (activeCamMode === 'tv') {
+          // Fixed TV broadcast cam at table corner
+          const tvCamPos = new THREE.Vector3(3.5, 1.8, 3.5);
+          window.app.camera.position.copy(tvCamPos);
+          window.app.camera.lookAt(car.position);
+        }
+      }
+      
+      updateCamera();
+    }
+
+    // Poller to detect when window.app is ready
+    function checkApp() {
+      if (window.app && window.app.scene && window.app.camera) {
+        initCustomFeatures();
+      } else {
+        setTimeout(checkApp, 100);
+      }
+    }
+    checkApp();
+  </script>
+</main> </body></html> <!-- Add an inline script to make the demoId available to client-side JavaScript --> <script>(function(){const demoId = "demoFormula";
 
 	window.DEMO_ID = demoId;
 })();</script> <script type="module" src="./_astro/_demo_.astro_astro_type_script_index_0_lang.CI7kkfYG.js"></script>
