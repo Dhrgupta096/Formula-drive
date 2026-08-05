@@ -1,0 +1,2 @@
+# This file tells GitHub Pages not to run Jekyll on our commits.
+# This prevents it from ignoring the "_astro" folder.
